@@ -14,6 +14,7 @@ const idValidation = (value, helpers) => {
 export const validationFields = {
   id: joi.string().custom(idValidation, 'Invalid id'),
   email: joi.string().email(),
+  password: joi.string().min(3).max(30),
 };
 
 export const isEmailValid = (email) => !validationFields.email.validate(email).error;
