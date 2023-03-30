@@ -4,6 +4,7 @@ const gavatar = require('gravatar');
 const { user: service } = require('../services');
 const { asyncWrapper, responseData } = require('../helpers/apiHelpers');
 const { DatabaseError, NotFoundError, ValidationError } = require('../helpers/errors');
+const { convertUserData } = require('../helpers/convertUserData');
 
 // TODO: Email verification
 /* require('dotenv').config();
@@ -41,15 +42,30 @@ const register = async (req, res) => {
   // TODO: Send verification email
   // await sendVerificationMail(email, verificationToken);
 
-  res.status(201).json(responseData({ user }, 201));
+  res.status(201).json(
+    responseData(
+      {
+        user: convertUserData(user),
+      },
+      201
+    )
+  );
 };
 
 // Login user
 const login = async (req, res) => {
-  const { email, password } = req.data;
-  const data = await service.login({ email, password });
+  const { email, password } = req.body;
+  const { token, user } = await service.login({ email, password });
 
-  res.status(200).json(responseData(data, 200));
+  res.status(200).json(
+    responseData(
+      {
+        token,
+        user: convertUserData(user),
+      },
+      200
+    )
+  );
 };
 
 // Logout user

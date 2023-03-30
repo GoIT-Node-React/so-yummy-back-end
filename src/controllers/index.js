@@ -1,3 +1,3 @@
 module.exports = {
-  userController: require('./user'),
+  user: require('./user'),
 };

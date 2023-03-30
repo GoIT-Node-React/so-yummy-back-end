@@ -1,22 +1,16 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const { UnAuthorizedError } = require('../helpers/errors');
 const { User } = require('../models');
 
 const { JWT_SECRET } = process.env;
 
-// Return correct user object with needed fields
-const convertUserData = (user) => {
-  const { _id: id, name, email, subscription, avatarURL } = user;
-
-  return { id, name, email, subscription, avatarURL };
-};
-
 // Registrer user
 const register = async (candidate) => {
-  const user = new UserModel(candidate);
+  const user = new User(candidate);
   await user.save();
 
-  return convertUserData(user);
+  return user;
 };
 
 // Login
@@ -36,14 +30,14 @@ const login = async (candidate) => {
     id: user._id,
   };
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
-  await user.updateOne({ token });
+  await user.updateOne({ token }, { new: true });
 
-  return { token, user: convertUserData(user) };
+  return { token, user };
 };
 
 // Logout
 const logout = async (id) => {
-  await UserModel.findByIdAndUpdate(id, { token: null });
+  await User.findByIdAndUpdate(id, { token: null });
 
   return true;
 };
@@ -52,21 +46,21 @@ const logout = async (id) => {
 const getUserByEmail = async (email) => {
   const user = await User.findOne({ email });
 
-  return convertUserData(user);
+  return user;
 };
 
 // Get user by email verification token
 const getUserByVerificationToken = async (verificationToken) => {
-  const user = await UserModel.findOne({ verificationToken });
+  const user = await User.findOne({ verificationToken });
 
-  return convertUserData(user);
+  return user;
 };
 
 // Get user by id
 const getUserById = async (id) => {
-  const user = await UserModel.findById(id);
+  const user = await User.findById(id);
 
-  return convertUserData(user);
+  return user;
 };
 
 module.exports = {
