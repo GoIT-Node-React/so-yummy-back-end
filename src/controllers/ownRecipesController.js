@@ -6,7 +6,7 @@ const {
 } = require("../services/ownRecipesService");
 const { asyncWrapper } = require("../helpers/apiHelpers");
 const createRecipeController = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { id: owner } = req.user;
   const recipeData = req.body;
   const data = {
     ...recipeData,
@@ -26,7 +26,7 @@ const createRecipeController = async (req, res) => {
 
 const deleteRecipeController = async (req, res) => {
   /*delete image from cloudinary*/
-  const { _id: owner } = req.user;
+  const { id: owner } = req.user;
   const { recipeId } = req.params;
   const result = await deleteRecipe(recipeId, owner);
   if (!result) {
@@ -39,7 +39,7 @@ const deleteRecipeController = async (req, res) => {
 };
 
 const getOwnRecipesController = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { id: owner } = req.user;
   let { page = 1, limit = 4 } = req.query;
   const recipes = await getRecipes(owner, page, limit);
   res.json({
