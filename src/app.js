@@ -1,16 +1,17 @@
-const express = require('express');
-const logger = require('morgan');
-const cors = require('cors');
-const { responseError } = require('./helpers/apiHelpers');
-const { RouteNotFoundError } = require('./helpers/errors');
-const { errorMiddleware } = require('./middlewares/errors');
+const express = require("express");
+const logger = require("morgan");
+const cors = require("cors");
+const { responseError } = require("./helpers/apiHelpers");
+const { RouteNotFoundError } = require("./helpers/errors");
+const { errorMiddleware } = require("./middlewares/errors");
 
 const app = express();
-const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
+const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
+// my rout
 
 // add you routes here
 
