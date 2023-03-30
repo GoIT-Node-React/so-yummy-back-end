@@ -1,3 +1,5 @@
 module.exports = {
-  auth: require('./auth'),
+  auth: require("./auth"),
+  search: require("./search"),
+  ingredients: require("./ingredients"),
 };
