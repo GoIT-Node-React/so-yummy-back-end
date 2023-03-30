@@ -1,7 +1,8 @@
-const { responseError } = require('../helpers/apiHelpers');
-const { BaseError, ServerError } = require('../helpers/errors');
+const { responseError } = require("../helpers/apiHelpers");
+const { BaseError, ServerError } = require("../helpers/errors");
 
 const errorMiddleware = (error, _req, res, _next) => {
+  console.log(error);
   if (error instanceof BaseError) {
     return res.status(error.code).json(responseError(error));
   }
