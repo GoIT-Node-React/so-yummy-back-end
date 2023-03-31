@@ -177,6 +177,43 @@
           }
         }
       }
+    },
+    "/search": {
+      "post": {
+        "tags": ["search"],
+        "summary": "Get a recipe by recipe name or ingredient name",
+        "parameters": [],
+        "requestBody": {
+          "description": "Query's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found (no recipe or ingredient found for your search criteria)",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -378,6 +415,212 @@
                     "type": "string",
                     "description": "User avatar",
                     "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SearchRequest": {
+        "type": "object",
+        "required": ["type", "value"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The name of the recipe search criterion",
+            "example": "Title or ingredient"
+          },
+          "value": {
+            "type": "string",
+            "description": "The name of the dish or ingredient",
+            "example": "Сhicken or milk"
+          },
+          "page": {
+            "type": "string",
+            "description": "The number of the group of received elements of the collection",
+            "example": "1"
+          },
+          "limit": {
+            "type": "string",
+            "description": "The number of collection items received per request",
+            "example": "1"
+          }
+        }
+      },
+      "SearchResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 201
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "ObjectId",
+                    "description": "User id",
+                    "example": "640cd5ac2d9fecf12e889837"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Name of recipe",
+                    "example": "Teriyaki Chicken Casserole"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Caregory of recipe",
+                    "example": "Chicken"
+                  },
+                  "area": {
+                    "type": "string",
+                    "description": "Belonging to cuisine",
+                    "example": "Chicken"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Cooking instructions",
+                    "example": "Fry your onion, peppers and garlic in olive oil until nicely translucent. Make a well in your veg and add your chicken. Add your seasoning and salt. Allow to colour slightly.\r\nAdd your cream, stock and macaroni.\r\nCook on low for 20 minutes. Add your cheeses, stir to combine.\r\nTop with roasted peppers and parsley."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "A brief description of the dish",
+                    "example": "A fusion dish that combines the flavors of chicken fajitas with creamy mac and cheese"
+                  },
+                  "thumb": {
+                    "type": "string",
+                    "description": "Large image of the dish",
+                    "example": "https://www.themealdb.com/images/media/meals/qrqywr1503066605.jpg"
+                  },
+                  "cloudinaryImageName": {
+                    "type": "string",
+                    "description": "",
+                    "example": ""
+                  },
+                  "preview": {
+                    "type": "string",
+                    "description": "A small image of the dish",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560538/n8iawnix9rkxfywjitzl.jpg"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Cooking time",
+                    "example": "40"
+                  },
+                  "popularity": {
+                    "type": "string",
+                    "description": "",
+                    "example": ""
+                  },
+                  "favorites": {
+                    "type": "string",
+                    "description": "",
+                    "example": ""
+                  },
+                  "likes": {
+                    "type": "string",
+                    "description": "",
+                    "example": ""
+                  },
+                  "youtube": {
+                    "type": "string",
+                    "description": "YouTube link to the cooking video",
+                    "example": "https://www.youtube.com/watch?v=bwTSmLTZKNg"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {},
+                    "description": "Main characteristics of the dish",
+                    "example": ["Pie", "Meat"]
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {},
+                    "description": "Ingredients of the dish",
+                    "example": [
+                      {
+                        "id": "640c2dd963a319ea671e3789",
+                        "measure": "2 tbs"
+                      },
+                      {
+                        "id": "640c2dd963a319ea671e37c2",
+                        "measure": "500g"
+                      },
+                      {
+                        "id": "640c2dd963a319ea671e37ae",
+                        "measure": "1 chopped"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "IngredientsRequest": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The name of the ingredient",
+            "example": "Salmon"
+          }
+        }
+      },
+      "IngredientsResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 201
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "ObjectId",
+                    "description": "User id",
+                    "example": "640cd5ac2d9fecf12e889837"
+                  },
+                  "ttl": {
+                    "type": "string",
+                    "description": "The name of the ingredient",
+                    "example": "Salmon"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "description": "Detailed description of the ingredient",
+                    "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae. Other fish in the same family include trout, char, grayling and whitefish. Salmon are native to tributaries of the North Atlantic (genus Salmo) and Pacific Ocean (genus Oncorhynchus). Many species of salmon have been introduced into non-native environments such as the Great Lakes of North America and Patagonia in South America. Salmon are intensively farmed in many parts of the world.\r\n\r\nTypically, salmon are anadromous: they hatch in fresh water, migrate to the ocean, then return to fresh water to reproduce. However, populations of several species are restricted to fresh water through their lives. Folklore has it that the fish return to the exact spot where they hatched to spawn. Tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon. Homing behavior has been shown to depend on olfactory memory. Salmon date back to the Neogene."
+                  },
+                  "t": {
+                    "type": "string",
+                    "description": "",
+                    "example": ""
+                  },
+                  "thb": {
+                    "type": "string",
+                    "description": "Small image of the ingredient",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
                   }
                 }
               }

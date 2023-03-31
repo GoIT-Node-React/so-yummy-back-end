@@ -25,8 +25,8 @@ const validationFields = {
 const validationSearchQuery = {
   type: Joi.string().required(),
   value: Joi.string().min(1).max(30).required(),
-  page: Joi.string().required(),
-  limit: Joi.string().required(),
+  page: Joi.string().optional(),
+  limit: Joi.string().optional(),
 };
 
 // Validation ingredients search query
