@@ -19,6 +19,4 @@ const getRecipeById = async (req, res) => {
   );
 };
 
-module.exports = {
-  getRecipeById: asyncWrapper(getRecipeById),
-};
+module.exports = asyncWrapper(getRecipeById);

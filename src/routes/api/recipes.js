@@ -1,6 +1,6 @@
 const express = require('express');
 const  controller  = require('../../controllers/recipes');
-const { user: auth } = require('../../middlewares');
+const { auth } = require('../../middlewares');
 const routerRecipe = express.Router();
 
 routerRecipe.get('/', auth, controller.getUserRecipe);

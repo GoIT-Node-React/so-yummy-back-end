@@ -17,6 +17,4 @@ const getRecipesByCategory = async (req, res) => {
   );
 };
 
-module.exports = {
-  getRecipesByCategory: asyncWrapper(getRecipesByCategory),
-};
+module.exports = asyncWrapper(getRecipesByCategory);

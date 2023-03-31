@@ -43,6 +43,4 @@ const getMainPage = async (req, res) => {
   );
 };
 
-module.exports = {
-  getMainPage: asyncWrapper(getMainPage),
-};
+module.exports = asyncWrapper(getMainPage)
