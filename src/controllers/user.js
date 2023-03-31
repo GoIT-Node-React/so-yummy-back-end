@@ -3,7 +3,11 @@ const gavatar = require('gravatar');
 
 const { user: service } = require('../services');
 const { asyncWrapper, responseData } = require('../helpers/apiHelpers');
-const { DatabaseError, NotFoundError, ValidationError } = require('../helpers/errors');
+const {
+  DatabaseError,
+  NotFoundError,
+  ValidationError,
+} = require('../helpers/errors');
 const { convertUserData } = require('../helpers/convertUserData');
 
 // TODO: Email verification
@@ -37,7 +41,13 @@ const register = async (req, res) => {
 
   const avatarURL = 'https:' + gavatar.url(email);
   const verificationToken = crypto.randomUUID();
-  const user = await service.register({ name, email, password, avatarURL, verificationToken });
+  const user = await service.register({
+    name,
+    email,
+    password,
+    avatarURL,
+    verificationToken,
+  });
 
   // TODO: Send verification email
   // await sendVerificationMail(email, verificationToken);

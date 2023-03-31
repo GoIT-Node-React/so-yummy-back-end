@@ -1,9 +1,7 @@
 module.exports = {
-    getCategories: './getCategories.js',
-    getPopularRecipes: './getPopularRecipes.js',
-    getRecipeById: './getRecipeById.js',
-    getRecipesByCategory: './getRecipesByCategory.js',
-    getRecipesByLimit: './getRecipesByLimit',
-    getRecipesByName: './getRecipesByName.js',
-    getSetOfRecipes: './getSetOfRecipes.js',
-}
+  getCategories: require('./getCategories'),
+  getRecipeById: require('./getRecipeById'),
+  getRecipesByCategory: require('./getRecipesByCategory'),
+  getMainPage: require('./getMainPage'),
+  getUserRecipe: require('./getUserRecipe'),
+};

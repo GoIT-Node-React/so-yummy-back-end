@@ -18,7 +18,7 @@ app.use(express.json());
 // add you routes here
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/auth', routes.auth);
-app.use('/recipes', routes.recipes)
+app.use('/api/recipes', routes.recipes)
 //==========================
 
 app.use((_, res) => {
@@ -26,5 +26,6 @@ app.use((_, res) => {
 });
 
 app.use(errorMiddleware);
+console.log(errorMiddleware);
 
 module.exports = app;
