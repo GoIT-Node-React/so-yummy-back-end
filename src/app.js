@@ -26,6 +26,6 @@ app.use((_, res) => {
 });
 
 app.use(errorMiddleware);
-console.log(errorMiddleware);
+
 
 module.exports = app;
