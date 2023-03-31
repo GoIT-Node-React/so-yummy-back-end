@@ -25,6 +25,13 @@ const validationFields = {
 const validationSearchQuery = {
   type: Joi.string().required(),
   value: Joi.string().min(1).max(30).required(),
+  page: Joi.string().required(),
+  limit: Joi.string().required(),
+};
+
+// Validation ingredients search query
+const validationIngredientsSearchQuery = {
+  value: Joi.string().min(1).max(30).optional(),
 };
 
 // Email validation for mongoose schema
@@ -46,6 +53,7 @@ const validationRequest =
 module.exports = {
   validationFields,
   validationSearchQuery,
+  validationIngredientsSearchQuery,
   isEmailValid,
   validationRequest,
 };

@@ -1,15 +1,25 @@
 const Recipe = require("../models/recipe");
 const Ingredient = require("../models/ingredient");
 
-const getRecipe = async (type, value) => {
+const getRecipe = async (type, value, page, limit) => {
   if (type === "title") {
-    const recipes = await Recipe.find();
-    return recipes.filter((elem) => elem.title.includes(value));
+    return await Recipe.find({
+      title: {
+        $regex: new RegExp(value, "i"),
+      },
+    })
+      .skip(page)
+      .limit(limit);
   }
 
   if (type === "ingredients") {
-    const recipes = await Ingredient.find();
-    return recipes.filter((elem) => elem.ttl.includes(value));
+    return await Ingredient.find({
+      ttl: {
+        $regex: new RegExp(value, "i"),
+      },
+    })
+      .skip(page)
+      .limit(limit);
   }
 };
 

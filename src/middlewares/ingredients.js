@@ -1,11 +1,11 @@
 const Joi = require("Joi");
 const {
-  validationSearchQuery,
+  validationIngredientsSearchQuery,
   validationRequest,
 } = require("../helpers/validation");
 
 const querySchema = Joi.object({
-  value: validationSearchQuery.value.required(),
+  value: validationIngredientsSearchQuery.value.optional(),
 });
 
 module.exports = {

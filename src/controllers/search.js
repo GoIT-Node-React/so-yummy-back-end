@@ -3,8 +3,8 @@ const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
 const { NotFoundError } = require("../helpers/errors");
 
 const getRecipeController = async (req, res) => {
-  const { type, value } = req.query;
-  const result = await service.getRecipe(type, value);
+  const { type, value, page = 1, limit = 5 } = req.query;
+  const result = await service.getRecipe(type, value, page, limit);
 
   if (result.length === 0) {
     res.status(404).json(new NotFoundError());
@@ -14,6 +14,8 @@ const getRecipeController = async (req, res) => {
     responseData(
       {
         result,
+        limit: parseInt(limit) > 5 ? 5 : parseInt(limit),
+        page: parseInt(page),
       },
       200
     )
