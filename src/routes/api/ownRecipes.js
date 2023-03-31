@@ -6,12 +6,12 @@ const {
   getOwnRecipes,
   createRecipe,
   deleteRecipe,
-} = require("../../controllers/ownRecipesController");
+} = require("../../controllers/ownRecipes");
 const { recipe: middleware, auth } = require("../../middlewares");
 
 router.use(auth);
 router.get("/", getOwnRecipes);
-router.post("/", middleware, uploadCloud.single("thumb"), createRecipe);
-router.delete("/:recipeId", deleteRecipe);
+router.post("/", uploadCloud.single("thumb"), middleware.recipe, createRecipe);
+router.delete("/:recipeId", middleware.recipeId, deleteRecipe);
 
 module.exports = router;

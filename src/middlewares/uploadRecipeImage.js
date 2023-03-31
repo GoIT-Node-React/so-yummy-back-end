@@ -10,10 +10,12 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  folder: "avatars",
-  allowedFormats: ["jpg", "png"],
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
+  params: {
+    folder: "recipes",
+    allowedFormats: ["jpg", "png"],
+    // filename: (req, file, cb) => {
+    //   cb(null, file.originalname);
+    // },
   },
 });
 const uploadCloud = multer({ storage });

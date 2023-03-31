@@ -4,11 +4,11 @@ const recipe = new Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, "Set title"],
     },
     category: {
       type: String,
-      required: true,
+      required: [true, "Category is required"],
     },
     area: {
       type: String,
@@ -16,15 +16,15 @@ const recipe = new Schema(
     },
     instructions: {
       type: String,
-      reguired: true,
+      reguired: [true, "Provide an instructions"],
     },
     description: {
       type: String,
-      require: true,
+      require: [true, "Description is required"],
     },
     thumb: {
       type: String,
-      required: true,
+      required: [true, "Set image"],
       /*image*/
     },
     cloudinaryImageName: {
@@ -38,7 +38,7 @@ const recipe = new Schema(
     },
     time: {
       type: String,
-      required: true,
+      required: [true, "Set time"],
     },
     popularity: {
       type: Number,
@@ -60,10 +60,18 @@ const recipe = new Schema(
       type: Array,
       default: null,
     },
-    ingredients: {
-      type: Array,
-      required: true,
-    },
+    ingredients: [
+      {
+        id: {
+          type: mongoose.Types.ObjectId,
+          ref: "ingredient",
+        },
+        measure: {
+          type: String,
+          required: [true, "Measure is required"],
+        },
+      },
+    ],
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",

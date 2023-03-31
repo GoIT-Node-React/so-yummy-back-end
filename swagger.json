@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json"],
+  "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
   "servers": [{ "url": "http://localhost:8001/api" }],
   "tags": [
@@ -176,6 +176,60 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/own-recipes": {
+      "post": {
+        "tags": ["own-recipes"],
+        "summary": "Create new recipe",
+
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+
+        "requestBody": {
+          "description": "Recipe details object",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Recipe created successful"
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["own-recipes"],
+        "summary": "Delete recipe",
+
+        "security": [{ "Bearer": [] }],
+        "parameters": []
+      },
+      "get": {
+        "tags": ["own-recipes"],
+        "summary": "Get own recipes list",
+
+        "security": [{ "Bearer": [] }],
+        "parameters": []
+      }
+    },
+    "/popular-recipes": {
+      "get": {
+        "tags": ["popular-recipes"],
+        "summary": "Get popular recipes list",
+
+        "security": [{ "Bearer": [] }],
+        "parameters": []
       }
     }
   },

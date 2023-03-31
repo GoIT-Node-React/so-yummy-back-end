@@ -20,6 +20,7 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/auth", routes.auth);
 app.use("/api/own-recipes", routes.ownRecipes);
+app.use("/api/popular-recipes", routes.popularRecipes);
 //==========================
 
 app.use((_, res) => {

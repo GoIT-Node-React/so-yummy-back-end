@@ -3,8 +3,9 @@ const {
   createRecipe,
   deleteRecipe,
   getRecipes,
-} = require("../services/ownRecipesService");
-const { asyncWrapper } = require("../helpers/apiHelpers");
+} = require("../services/ownRecipes");
+const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
+
 const createRecipeController = async (req, res) => {
   const { id: owner } = req.user;
   const recipeData = req.body;
@@ -15,17 +16,17 @@ const createRecipeController = async (req, res) => {
     cloudinaryImageName: req.file.filename,
   };
   const recipe = await createRecipe(data);
-  res.json({
-    code: 201,
-    message: "Created",
-    data: {
-      recipe,
-    },
-  });
+  res.status(201).json(
+    responseData(
+      {
+        recipe,
+      },
+      201
+    )
+  );
 };
 
 const deleteRecipeController = async (req, res) => {
-  /*delete image from cloudinary*/
   const { id: owner } = req.user;
   const { recipeId } = req.params;
   const result = await deleteRecipe(recipeId, owner);
@@ -33,24 +34,23 @@ const deleteRecipeController = async (req, res) => {
     throw new NotFoundError();
   }
   res.json({
-    code: 200,
-    message: "recipe deleted",
+    message: "Recipe deleted",
   });
 };
 
 const getOwnRecipesController = async (req, res) => {
   const { id: owner } = req.user;
-  let { page = 1, limit = 4 } = req.query;
+  let { page = 1, limit = 10 } = req.query;
+  limit = +limit > 100 ? 100 : +limit;
   const recipes = await getRecipes(owner, page, limit);
-  res.json({
-    status: "success",
-    code: 200,
-    data: {
-      recipes,
-      page,
-      limit,
-    },
-  });
+  res.json(
+    responseData(
+      {
+        ...recipes,
+      },
+      200
+    )
+  );
 };
 
 module.exports = {
