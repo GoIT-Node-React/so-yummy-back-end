@@ -1,16 +1,16 @@
 const express = require('express');
 const  controller  = require('../../controllers/recipes');
 const { user: auth } = require('../../middlewares');
-const router = express.Router();
+const routerRecip = express.Router();
 
-router.get('/', auth, controller.getCategories);
+routerRecip.get('/', auth, controller.getUserRecipe);
 
-router.get('/category/list', auth, controller.getCategories);
+routerRecip.get('/category/list', auth, controller.getCategories);
 
-router.get('/main-page', auth, controller.getMainPage);
+routerRecip.get('/main-page', auth, controller.getMainPage);
 
-router.get('/:category', auth, controller.getRecipesByCategory);
+routerRecip.get('/:category', auth, controller.getRecipesByCategory);
 
-router.get('/:id', auth, controller.getRecipeById);
+routerRecip.get('/:id', auth, controller.getRecipeById);
 
-module.exports = router;
+module.exports = routerRecip;
