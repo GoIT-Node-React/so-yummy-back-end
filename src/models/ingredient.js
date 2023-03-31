@@ -1,9 +1,20 @@
-const { Schema, model, SchemaTypes } = require("mongoose");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const ingredientSchema = new Schema(
+const ingredient = new Schema(
   {
     ttl: {
       type: String,
+    },
+    desc: {
+      type: String,
+    },
+    t: {
+      type: String,
+    },
+    thb: {
+      type: String,
+      required: [true, "Set image"],
     },
   },
   {
@@ -12,5 +23,6 @@ const ingredientSchema = new Schema(
   }
 );
 
-const Ingredient = model("Ingredient", ingredientSchema);
+const Ingredient = mongoose.model("ingredient", ingredient);
+
 module.exports = Ingredient;

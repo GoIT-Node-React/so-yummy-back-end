@@ -1,5 +1,5 @@
 const { search: service } = require("../services");
-const { asyncWrapper } = require("../helpers/apiHelpers");
+const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
 const { NotFoundError } = require("../helpers/errors");
 
 const getRecipeController = async (req, res) => {
@@ -10,12 +10,14 @@ const getRecipeController = async (req, res) => {
     res.status(404).json(new NotFoundError());
   }
 
-  res.json({
-    status: "200",
-    data: {
-      result,
-    },
-  });
+  res.status(200).json(
+    responseData(
+      {
+        result,
+      },
+      200
+    )
+  );
 };
 
 module.exports = {
