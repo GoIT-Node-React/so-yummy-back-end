@@ -22,5 +22,7 @@ const ingredient = new Schema(
   },
   { timestamps: true }
 );
+
 const Ingredient = mongoose.model("ingredient", ingredient);
+
 module.exports = Ingredient;

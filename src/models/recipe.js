@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const recipe = new Schema(
   {
     title: {
@@ -70,6 +71,7 @@ const recipe = new Schema(
           type: String,
           required: [true, "Measure is required"],
         },
+        _id: false,
       },
     ],
     owner: {
@@ -81,4 +83,5 @@ const recipe = new Schema(
 );
 
 const Recipe = mongoose.model("recipe", recipe);
+
 module.exports = Recipe;

@@ -3,4 +3,5 @@ module.exports = {
   auth: require("./auth"),
   user: require("./user"),
   recipe: require("./recipe"),
+  upload: require("./uploadRecipeImage"),
 };

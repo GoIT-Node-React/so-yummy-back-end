@@ -1,9 +1,12 @@
 const Joi = require("Joi");
+
+const { RequestFieldType } = require("../types");
 const {
   validationFields,
   validationRequest,
+  validationRequestWithImg,
 } = require("../helpers/validation");
-const { RequestFieldType } = require("../types");
+
 const recipeSchema = Joi.object({
   title: validationFields.title.required(),
   category: validationFields.category.required(),
@@ -12,10 +15,12 @@ const recipeSchema = Joi.object({
   time: validationFields.time.required(),
   ingredients: validationFields.ingredients.required(),
 });
+
 const recipeIdSchema = Joi.object({
   recipeId: validationFields.id.required(),
 });
+
 module.exports = {
-  recipe: validationRequest(recipeSchema, RequestFieldType.body),
+  recipe: validationRequestWithImg(recipeSchema, RequestFieldType.body),
   recipeId: validationRequest(recipeIdSchema, RequestFieldType.params),
 };

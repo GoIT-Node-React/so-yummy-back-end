@@ -2,7 +2,7 @@ const { isValidObjectId } = require("mongoose");
 const Joi = require("joi");
 const { RequestFieldType } = require("../types");
 const { ValidationError } = require("./errors");
-
+const cloudinary = require("cloudinary");
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
   if (!isValidObjectId(value)) {
@@ -43,8 +43,23 @@ const validationRequest =
     next();
   };
 
+//Request validation function after upload image middleware
+const validationRequestWithImg =
+  (schema, type = RequestFieldType.body) =>
+  (req, _res, next) => {
+    const validationResult = schema.validate(req[type]);
+
+    if (validationResult.error) {
+      cloudinary.v2.uploader.destroy(req.file.filename, "image");
+      throw new ValidationError(validationResult.error.message);
+    }
+
+    next();
+  };
+
 module.exports = {
   validationFields,
   isEmailValid,
   validationRequest,
+  validationRequestWithImg,
 };

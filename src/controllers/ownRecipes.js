@@ -1,12 +1,9 @@
-const { NotFoundError } = require("../helpers/errors");
-const {
-  createRecipe,
-  deleteRecipe,
-  getRecipes,
-} = require("../services/ownRecipes");
-const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
+const cloudinary = require("cloudinary");
 
-const createRecipeController = async (req, res) => {
+const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
+const { ownRecipes: service } = require("../services");
+
+const createRecipe = async (req, res, next) => {
   const { id: owner } = req.user;
   const recipeData = req.body;
   const data = {
@@ -15,34 +12,42 @@ const createRecipeController = async (req, res) => {
     thumb: req.file.path,
     cloudinaryImageName: req.file.filename,
   };
-  const recipe = await createRecipe(data);
-  res.status(201).json(
-    responseData(
-      {
-        recipe,
-      },
-      201
-    )
-  );
+  try {
+    const recipe = await service.create(data);
+    if (!recipe) {
+      return error;
+    }
+
+    res.status(201).json(
+      responseData(
+        {
+          recipe,
+        },
+        201
+      )
+    );
+  } catch (error) {
+    await cloudinary.v2.uploader.destroy(req.file.filename, "image");
+    next(error);
+  }
 };
 
-const deleteRecipeController = async (req, res) => {
+const deleteRecipe = async (req, res) => {
   const { id: owner } = req.user;
   const { recipeId } = req.params;
-  const result = await deleteRecipe(recipeId, owner);
-  if (!result) {
-    throw new NotFoundError();
-  }
+  await service.deleteById(recipeId, owner);
+
   res.json({
     message: "Recipe deleted",
   });
 };
 
-const getOwnRecipesController = async (req, res) => {
+const getOwnRecipes = async (req, res) => {
   const { id: owner } = req.user;
   let { page = 1, limit = 10 } = req.query;
-  limit = +limit > 100 ? 100 : +limit;
-  const recipes = await getRecipes(owner, page, limit);
+  limit = +limit > 50 ? 50 : +limit;
+  const recipes = await service.get(owner, page, limit);
+
   res.json(
     responseData(
       {
@@ -54,7 +59,7 @@ const getOwnRecipesController = async (req, res) => {
 };
 
 module.exports = {
-  createRecipe: asyncWrapper(createRecipeController),
-  deleteRecipe: asyncWrapper(deleteRecipeController),
-  getOwnRecipes: asyncWrapper(getOwnRecipesController),
+  createRecipe: asyncWrapper(createRecipe),
+  deleteRecipe: asyncWrapper(deleteRecipe),
+  getOwnRecipes: asyncWrapper(getOwnRecipes),
 };

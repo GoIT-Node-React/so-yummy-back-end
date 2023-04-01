@@ -2,6 +2,7 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
+
 const swaggerDocument = require("../swagger.json");
 const { responseError } = require("./helpers/apiHelpers");
 const { RouteNotFoundError } = require("./helpers/errors");
@@ -21,6 +22,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/auth", routes.auth);
 app.use("/api/own-recipes", routes.ownRecipes);
 app.use("/api/popular-recipes", routes.popularRecipes);
+app.use("/api/achievements", routes.achievements);
 //==========================
 
 app.use((_, res) => {

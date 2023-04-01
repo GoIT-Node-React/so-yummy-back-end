@@ -1,9 +1,10 @@
 const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
-const { popularRecipes } = require("../services/popularRecipes");
-const popularRecipesController = async (req, res) => {
+const { popularRecipes: service } = require("../services");
+
+const popularRecipes = async (req, res) => {
   let { page = 1, limit = 10 } = req.query;
   limit = +limit > 50 ? 50 : +limit;
-  const recipes = await popularRecipes(page, limit);
+  const recipes = await service.get(page, limit);
   res.json(
     responseData(
       {
@@ -13,6 +14,7 @@ const popularRecipesController = async (req, res) => {
     )
   );
 };
+
 module.exports = {
-  getRecipes: asyncWrapper(popularRecipesController),
+  getRecipes: asyncWrapper(popularRecipes),
 };
