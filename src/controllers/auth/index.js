@@ -4,4 +4,5 @@ module.exports = {
   logout: require('./logout'),
   current: require('./current'),
   refresh: require('./refresh'),
+  google: require('./google'),
 };

@@ -28,9 +28,7 @@ const createRecipe = async (req, res, next) => {
       )
     );
   } catch (error) {
-    console.log(error);
     await cloudinary.v2.uploader.destroy(req.file.filename, 'image');
-    //next(error);
     throw new ValidationError('Validation error');
   }
 };
