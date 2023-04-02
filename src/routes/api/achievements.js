@@ -1,9 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const { auth } = require("../../middlewares");
-const { achievements: controller } = require("../../controllers");
+const { auth: authMiddleware } = require('../../middlewares');
+const { achievements: controller } = require('../../controllers');
 
-router.get("/", auth, controller.get);
+router.get('/', authMiddleware.auth, controller.get);
 
 module.exports = router;

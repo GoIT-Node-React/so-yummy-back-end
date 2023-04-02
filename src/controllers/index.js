@@ -1,6 +1,6 @@
 module.exports = {
-  user: require("./user"),
-  ownRecipes: require("./ownRecipes"),
-  popularRecipes: require("./popularRecipes"),
-  achievements: require("./achievements"),
+  auth: require('./auth'),
+  ownRecipes: require('./ownRecipes'),
+  popularRecipes: require('./popularRecipes'),
+  achievements: require('./achievements'),
 };
