@@ -1,5 +1,5 @@
 class BaseError extends Error {
-  constructor(message) {
+  constructor(message = 'Unknown error') {
     super(message);
     this._code = 500;
     this._status = 'fail';
@@ -18,7 +18,7 @@ class BaseError extends Error {
 }
 
 class ValidationError extends BaseError {
-  constructor(message) {
+  constructor(message = 'Validation error') {
     super(message);
 
     this._code = 400;
@@ -28,7 +28,7 @@ class ValidationError extends BaseError {
 }
 
 class NotFoundError extends BaseError {
-  constructor(message) {
+  constructor(message = 'Not found') {
     super(message);
     this._code = 404;
     this._status = 'error';
@@ -38,7 +38,7 @@ class NotFoundError extends BaseError {
 
 class RouteNotFoundError extends BaseError {
   constructor() {
-    super(`Route note found`);
+    super(`Route not found`);
 
     this._code = 404;
     this._status = 'error';
@@ -47,7 +47,7 @@ class RouteNotFoundError extends BaseError {
 }
 
 class DatabaseError extends BaseError {
-  constructor(message) {
+  constructor(message = 'Conflict') {
     super(message);
     this._code = 409;
     this._status = 'error';
@@ -56,7 +56,7 @@ class DatabaseError extends BaseError {
 }
 
 class UnAuthorizedError extends BaseError {
-  constructor(message) {
+  constructor(message = 'Unauthorized error') {
     super(message);
     this._code = 401;
     this._status = 'error';
@@ -64,8 +64,17 @@ class UnAuthorizedError extends BaseError {
   }
 }
 
+class ForbiddenError extends BaseError {
+  constructor(message = 'Forbidden errror') {
+    super(message);
+    this._code = 403;
+    this._status = 'error';
+    this._data = 'Forbidden';
+  }
+}
+
 class ServerError extends BaseError {
-  constructor(message) {
+  constructor(message = 'Initial Server error') {
     super(message);
     this._code = 500;
     this._status = 'fail';
@@ -81,4 +90,5 @@ module.exports = {
   ServerError,
   UnAuthorizedError,
   ValidationError,
+  ForbiddenError,
 };
