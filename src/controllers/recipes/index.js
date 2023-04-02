@@ -3,5 +3,5 @@ module.exports = {
   getRecipeById: require('./getRecipeById'),
   getRecipesByCategory: require('./getRecipesByCategory'),
   getMainPage: require('./getMainPage'),
-  getUserRecipe: require('./getAllRecipe'),
+  getAllRecipes: require('./getAllRecipes'),
 };

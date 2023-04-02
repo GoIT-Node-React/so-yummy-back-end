@@ -1,185 +1,5 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "version": "1.0.0",
-    "title": "So Yummy",
-    "description": "Api",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
-  },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:8001/api" }],
-  "tags": [
-    {
-      "name": "auth",
-      "description": "Authorization endpoints"
-    },
-    {
-      "name": "users",
-      "description": "User endpoints"
-    },
-    {
-      "name": "ingredients",
-      "description": "Ingredients endpoints"
-    },
-    {
-      "name": "recipes",
-      "description": "Recipe endpoints"
-    },
-    {
-      "name": "own-recipes",
-      "description": "Own recipe endpoints"
-    },
-    {
-      "name": "search",
-      "description": "Search endpoint"
-    },
-    {
-      "name": "favorite",
-      "description": "Favorite endpoints"
-    },
-    {
-      "name": "shopping-list",
-      "description": "Shopping list endpoints"
-    },
-    {
-      "name": "popular-recipes",
-      "description": "Popular recipes endpoints"
-    },
-    {
-      "name": "subscribe",
-      "description": "Subscribe endpoints"
-    }
-  ],
-  "paths": {
-    "/auth/register": {
-      "post": {
-        "tags": ["auth"],
-        "summary": "User registration",
-        "parameters": [],
-        "requestBody": {
-          "description": "Registration's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          },
-          "409": {
-            "description": "Email is already in use",
-            "content": {}
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/auth/login": {
-      "post": {
-        "tags": ["auth"],
-        "summary": "User login",
-        "parameters": [],
-        "requestBody": {
-          "description": "Logins's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "tags": ["auth"],
-        "summary": "User logout",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "responses": {
-          "204": {
-            "description": "Logout success"
-          },
-          "401": {
-            "description": "Invalid token"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/auth/current": {
-      "get": {
-        "tags": ["auth"],
-        "summary": "Get user info by token",
-        "security": [{ "Bearer": [] }],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CurrentResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Invalid token"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    }
-  },
-  "/recipes/": {
+    "/recipes/": {
             "get": {
                 "tags": [
                     "recipes"
@@ -204,7 +24,7 @@
                 }
             }
         },
-        "/recipes/categories": {
+    "/recipes/categories": {
             "get": {
                 "tags": [
                     "recipes"
@@ -232,7 +52,7 @@
         "/recipes/main-page": {
             "get": {
                 "tags": [
-                    "Recipes"
+                    "recipes"
                 ],
                 "summary": "Get main page",
                 "parameters": [],
@@ -314,229 +134,22 @@
                 }
             }
         },
-"components": {
-    "schemas": {
-      "RegistrationRequest": {
-        "type": "object",
-        "required": ["name", "email", "password"],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "User name",
-            "example": "Andrii",
-            "minLength": 1,
-            "maxLength": 30
-          },
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "minLength": 3,
-            "maxLength": 30,
-            "example": "qwerty123"
-          }
-        }
-      },
-      "RegistrationResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Response status text",
-            "example": "success"
-          },
-          "code": {
-            "type": "integer",
-            "description": "Response status code",
-            "example": 201
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "user": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "ObjectId",
-                    "description": "User id",
-                    "example": "507f1f77bcf86cd799439011"
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "User name",
-                    "example": "Andrii"
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email"
-                  },
-                  "subscription": {
-                    "type": "string",
-                    "nullable": true,
-                    "description": "User email subscription",
-                    "format": "email",
-                    "example": null
-                  },
-                  "avatarURL": {
-                    "type": "string",
-                    "description": "User avatar",
-                    "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "LoginRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "minLength": 3,
-            "maxLength": 30,
-            "example": "qwerty123"
-          }
-        }
-      },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Response status text",
-            "example": "success"
-          },
-          "code": {
-            "type": "integer",
-            "description": "Response status code",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "token": {
-                "type": "string",
-                "description": "User access token",
-                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MjVhNmY2MjIyNjczM2IwNzZmOTE4OSIsImlhdCI6MTY4MDE5MDQxNiwiZXhwIjoxNjgwMjc2ODE2fQ.9odTokQdUwOV-jBADF_XfBUuB5OGsWqgjhEu9lIJcw8"
-              },
-              "user": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "ObjectId",
-                    "description": "User id",
-                    "example": "507f1f77bcf86cd799439011"
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "User name",
-                    "example": "Andrii"
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email"
-                  },
-                  "subscription": {
-                    "type": "string",
-                    "nullable": true,
-                    "description": "User email subscription",
-                    "format": "email",
-                    "example": null
-                  },
-                  "avatarURL": {
-                    "type": "string",
-                    "description": "User avatar",
-                    "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "CurrentResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "Response status text",
-            "example": "success"
-          },
-          "code": {
-            "type": "integer",
-            "description": "Response status code",
-            "example": 200
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "user": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "ObjectId",
-                    "description": "User id",
-                    "example": "507f1f77bcf86cd799439011"
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "User name",
-                    "example": "Andrii"
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "User email",
-                    "format": "email"
-                  },
-                  "subscription": {
-                    "type": "string",
-                    "nullable": true,
-                    "description": "User email subscription",
-                    "format": "email",
-                    "example": null
-                  },
-                  "avatarURL": {
-                    "type": "string",
-                    "description": "User avatar",
-                    "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
-                  }
-                }
-              }
-            }
-          }
-        }
         
-      }
-      
-    },
-    "allRecipesResponse" : {
-                "type": "object",
+        "components": {
+           "allRecipesResponse" : {
+               "type": "object",
                 "items": {
                     "type": "string"
-                }
+                } 
             },
-    "CategoriesResponse": {
+            "CategoriesResponse": {
                 "type": "array",
                 "items": {
                     "type": "string",
                     "example": "Beef,Breakfast,Chicken,Dessert,Goat,Lamb,Miscellaneous,Pasta,Pork,Seafood,Side,Starter,Vegan,Vegeterian"
                 }
             },
-              "Main-pageResponse": {
+            "Main-pageResponse": {
                 "type": "object",
                 "properties": {
                     "Pork": {
@@ -582,10 +195,8 @@
                                 "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560622/vjkwqtj7nssohxiqxtwl.jpg"
                             }
                         ]
-                    }
-                  }
-                },
-                "recipesByIdResponse": {
+                    },
+            "recipesByIdResponse": {
                 "type": "object",
                 "properties": {
                     "_id": {
@@ -699,13 +310,7 @@
                         "owner": "642505e34fa20d6fe32fb381"
                     }
                 ]
-            },
-    "securitySchemes": {
-      "Bearer": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
+            }
+        }
     }
-  }
-}
+        }}

@@ -3,7 +3,7 @@ const  controller  = require('../../controllers/recipes');
 const { auth } = require('../../middlewares');
 const routerRecipe = express.Router();
 
-routerRecipe.get('/', auth, controller.getUserRecipe);
+routerRecipe.get('/', auth, controller.getAllRecipes);
 
 routerRecipe.get('/categories', auth, controller.getCategories);
 
