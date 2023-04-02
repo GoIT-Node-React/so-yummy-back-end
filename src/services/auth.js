@@ -45,6 +45,7 @@ const logout = async (id) => {
   return true;
 };
 
+// Generate ne tokens and update token by user id
 const updateTokensById = async (id) => {
   const payload = {
     id,
