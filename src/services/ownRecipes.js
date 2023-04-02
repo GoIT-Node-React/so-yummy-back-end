@@ -1,7 +1,6 @@
 const cloudinary = require("cloudinary");
 
 const { Recipe } = require("../models");
-const { NotFoundError } = require("../helpers/errors");
 
 const create = async (data) => {
   const recipe = await Recipe.create(data);
@@ -9,13 +8,12 @@ const create = async (data) => {
 };
 
 const deleteById = async (id, owner) => {
-  const recipe = await Recipe.findById(id);
-  if (!recipe) {
-    throw new NotFoundError();
-  }
+  const recipe = Recipe.findById(id);
+
   if (recipe.cloudinaryImageName) {
     await cloudinary.v2.uploader.destroy(recipe.cloudinaryImageName, "image");
   }
+
   const result = await Recipe.findOneAndRemove({ _id: id, owner });
   return result;
 };
@@ -40,6 +38,7 @@ const get = async (owner, page, limit) => {
       },
     },
   ];
+
   const results = await Recipe.aggregate(pipeline);
   return results[0];
 };

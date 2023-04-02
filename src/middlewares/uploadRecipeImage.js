@@ -1,8 +1,9 @@
-const cloudinary = require('cloudinary').v2;
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const { ValidationError } = require('../helpers/errors');
-require('dotenv').config();
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+const { ValidationError } = require("../helpers/errors");
+require("dotenv").config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -13,18 +14,19 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'recipes',
-    allowedFormats: ['jpg', 'png'],
+    folder: "recipes",
+    allowedFormats: ["jpg", "png"],
+    transformation: [{ width: 600, height: 600, crop: "limit" }],
   },
 });
 
 const uploadCloud = multer({
   storage,
   fileFilter: (_req, file, cb) => {
-    const [type] = file.mimetype.split('/');
+    const [type] = file.mimetype.split("/");
 
-    if (type !== 'image') {
-      return cb(new ValidationError('You can upload only the image file'));
+    if (type !== "image") {
+      return cb(new ValidationError("You can upload only the image file"));
     }
 
     cb(null, true);

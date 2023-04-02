@@ -1,4 +1,4 @@
-const { Recipe, User } = require("../models");
+const { User } = require("../models");
 
 const achievements = async (id) => {
   const result = await User.aggregate([
