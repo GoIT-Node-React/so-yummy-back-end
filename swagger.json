@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json"],
+  "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
   "servers": [{ "url": "http://localhost:8001/api" }],
   "tags": [
@@ -177,6 +177,178 @@
           }
         }
       }
+    },
+    "/own-recipes": {
+      "post": {
+        "tags": ["own-recipes"],
+        "summary": "Create new recipe",
+
+        "security": [{ "Bearer": [] }],
+
+        "requestBody": {
+          "description": "Recipe's details object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOwnRecipeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Recipe created successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOwnRecipeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["own-recipes"],
+        "summary": "Get own recipes list",
+
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+
+            "description": "Number of page and amount of recipes per page"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Number of page and amount of recipes per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOwnRecipesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/own-recipes/:{recipeId}": {
+      "delete": {
+        "tags": ["own-recipes"],
+        "summary": "Delete recipe",
+
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+
+            "description": "Recipe's id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe deleted"
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/popular-recipes": {
+      "get": {
+        "tags": ["popular-recipes"],
+        "summary": "Get popular recipes list",
+
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Number of current page"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Amount of recipes per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPopularRecipesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -226,7 +398,7 @@
                 "type": "object",
                 "properties": {
                   "id": {
-                    "type": "ObjectId",
+                    "type": "string",
                     "description": "User id",
                     "example": "507f1f77bcf86cd799439011"
                   },
@@ -301,7 +473,7 @@
                 "type": "object",
                 "properties": {
                   "id": {
-                    "type": "ObjectId",
+                    "type": "string",
                     "description": "User id",
                     "example": "507f1f77bcf86cd799439011"
                   },
@@ -353,7 +525,7 @@
                 "type": "object",
                 "properties": {
                   "id": {
-                    "type": "ObjectId",
+                    "type": "string",
                     "description": "User id",
                     "example": "507f1f77bcf86cd799439011"
                   },
@@ -380,6 +552,441 @@
                     "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
                   }
                 }
+              }
+            }
+          }
+        }
+      },
+      "AddOwnRecipeRequest": {
+        "type": "object",
+        "required": [
+          "thumb",
+          "title",
+          "category",
+          "instructions",
+          "description",
+          "time",
+          "ingredients"
+        ],
+        "properties": {
+          "thumb": {
+            "type": "string",
+            "format": "binary",
+            "description": "Recipe's image"
+          },
+          "title": {
+            "type": "string",
+            "description": "Recipe's title"
+          },
+          "category": {
+            "type": "string",
+            "description": "Recipe's category"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Recipe's instruction"
+          },
+          "description": {
+            "type": "string",
+            "description": "Recipe's description"
+          },
+          "time": {
+            "type": "string",
+            "description": "Recipe's time to cook"
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Ingredient's id"
+                },
+                "measure": {
+                  "type": "string",
+                  "description": "Measure"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AddOwnRecipeResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 201
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Recipe's title"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Recipe's category"
+                  },
+                  "area": {
+                    "type": "string",
+                    "description": "Recipe's area"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Instructions for cooking"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Recipe's description"
+                  },
+                  "thumb": {
+                    "type": "string",
+                    "description": "Link to get recipe's image from cloudinary"
+                  },
+                  "cloudinaryImageName": {
+                    "type": "string",
+                    "description": "Name of image in cloudinary storage"
+                  },
+                  "preview": {
+                    "type": "string"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Time for cooking"
+                  },
+                  "popularity": {
+                    "type": "string"
+                  },
+                  "favorites": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "User's id which will add this recipe to favorite"
+                    }
+                  },
+                  "likes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "youtube": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Ingredient's id"
+                        },
+                        "measure": {
+                          "type": "string",
+                          "description": "Ingredient's amount in different units"
+                        }
+                      }
+                    }
+                  },
+                  "owner": {
+                    "type": "string",
+                    "description": "Person's id which added recipe"
+                  },
+                  "_id": {
+                    "type": "string",
+                    "description": "Recipe's id, created MongoDB"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "description": "Date and time when recipe was created"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "description": "Date and time when recipe updates"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetOwnRecipesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "Recipe's title"
+                    },
+                    "category": {
+                      "type": "string",
+                      "description": "Recipe's category"
+                    },
+                    "area": {
+                      "type": "string",
+                      "description": "Recipe's area"
+                    },
+                    "instructions": {
+                      "type": "string",
+                      "description": "Instructions for cooking"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Recipe's description"
+                    },
+                    "thumb": {
+                      "type": "string",
+                      "description": "Link to get recipe's image from cloudinary"
+                    },
+                    "cloudinaryImageName": {
+                      "type": "string",
+                      "description": "Name of image in cloudinary storage"
+                    },
+                    "preview": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Time for cooking"
+                    },
+                    "popularity": {
+                      "type": "string"
+                    },
+                    "favorites": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "User's id which will add this recipe to favorite"
+                      }
+                    },
+                    "likes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "youtube": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Ingredient's id"
+                          },
+                          "measure": {
+                            "type": "string",
+                            "description": "Ingredient's amount in different units"
+                          }
+                        }
+                      }
+                    },
+                    "owner": {
+                      "type": "string",
+                      "description": "Person's id which added recipe"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "Recipe's id, created MongoDB"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "Date and time when recipe was created"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "Date and time when recipe updates"
+                    }
+                  }
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total recipe's amount"
+              },
+              "page": {
+                "type": "integer",
+                "description": "Current page"
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Recipe's amount per page"
+              }
+            }
+          }
+        }
+      },
+      "GetPopularRecipesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Recipe's id, created MongoDB"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Recipe's title"
+                    },
+                    "category": {
+                      "type": "string",
+                      "description": "Recipe's category"
+                    },
+                    "area": {
+                      "type": "string",
+                      "description": "Recipe's area"
+                    },
+                    "instructions": {
+                      "type": "string",
+                      "description": "Instructions for cooking"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Recipe's description"
+                    },
+                    "thumb": {
+                      "type": "string",
+                      "description": "Link to get recipe's image from image's storage"
+                    },
+                    "preview": {
+                      "type": "string",
+                      "description": "Link to get recipe's image from image's storage"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Time for cooking"
+                    },
+                    "popularity": {
+                      "type": "integer"
+                    },
+                    "favorites": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "User's id which added this recipe to favorite"
+                      }
+                    },
+                    "likes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "User's id which liked this recipe"
+                      }
+                    },
+                    "youtube": {
+                      "type": "string",
+                      "description": "Link to youtube video"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "ingredients": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Ingredient's id"
+                          },
+                          "measure": {
+                            "type": "string",
+                            "description": "Ingredient's amount in different units"
+                          }
+                        }
+                      }
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "Date and time when recipe was created"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "description": "Date and time when recipe updates"
+                    },
+                    "favoriteCount": {
+                      "type": "integer",
+                      "description": "Amount of users which added recipe to favorite"
+                    }
+                  }
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total recipe's amount"
+              },
+              "page": {
+                "type": "integer",
+                "description": "Current page"
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Recipe's amount per page"
               }
             }
           }
