@@ -1,0 +1,6 @@
+{
+  "ignore": ["node_modules"],
+  "watch": ["src", "swagger.json"],
+  "ext": "js",
+  "exec": "node src/server.js"
+}
