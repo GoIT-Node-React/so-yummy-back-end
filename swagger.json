@@ -179,21 +179,11 @@
       }
     },
     "/search": {
-      "post": {
+      "get": {
         "tags": ["search"],
         "summary": "Get a recipe by recipe name or ingredient name",
+        "security": [{ "Bearer": [] }],
         "parameters": [],
-        "requestBody": {
-          "description": "Query's object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SearchRequest"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -204,6 +194,39 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid token"
+          },
+          "404": {
+            "description": "Not found (no recipe or ingredient found for your search criteria)",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/ingredients": {
+      "get": {
+        "tags": ["ingredients"],
+        "summary": "Get ingredients",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token"
           },
           "404": {
             "description": "Not found (no recipe or ingredient found for your search criteria)",
@@ -459,12 +482,12 @@
           "code": {
             "type": "integer",
             "description": "Response status code",
-            "example": 201
+            "example": 200
           },
           "data": {
             "type": "object",
             "properties": {
-              "recipe": {
+              "recipes": {
                 "type": "object",
                 "properties": {
                   "id": {
@@ -589,12 +612,12 @@
           "code": {
             "type": "integer",
             "description": "Response status code",
-            "example": 201
+            "example": 200
           },
           "data": {
             "type": "object",
             "properties": {
-              "recipe": {
+              "ingredients": {
                 "type": "object",
                 "properties": {
                   "id": {

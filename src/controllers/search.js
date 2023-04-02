@@ -1,20 +1,29 @@
 const { search: service } = require("../services");
 const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
-const { NotFoundError } = require("../helpers/errors");
 
-const getRecipeController = async (req, res) => {
-  const { type, value, page = 1, limit = 5 } = req.query;
-  const result = await service.getRecipe(type, value, page, limit);
+const {
+  MAX_LIMIT_PER_PAGE,
+  DEFAULT_LIMIT_PER_PAGE,
+  DEFAULT_PAGE,
+} = require("../helpers/variables");
 
-  if (result.length === 0) {
-    res.status(404).json(new NotFoundError());
-  }
+const getRecipeByTitleController = async (req, res) => {
+  const {
+    type,
+    value,
+    page = DEFAULT_PAGE,
+    limit = DEFAULT_LIMIT_PER_PAGE,
+  } = req.query;
+  const recipes = await service.getRecipeByTitle(type, value, page, limit);
 
   res.status(200).json(
     responseData(
       {
-        result,
-        limit: parseInt(limit) > 5 ? 5 : parseInt(limit),
+        recipes,
+        limit:
+          parseInt(limit) > MAX_LIMIT_PER_PAGE
+            ? MAX_LIMIT_PER_PAGE
+            : parseInt(limit),
         page: parseInt(page),
       },
       200
@@ -23,5 +32,5 @@ const getRecipeController = async (req, res) => {
 };
 
 module.exports = {
-  getRecipeController: asyncWrapper(getRecipeController),
+  getRecipeByTitleController: asyncWrapper(getRecipeByTitleController),
 };

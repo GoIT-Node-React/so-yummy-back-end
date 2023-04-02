@@ -1,6 +1,6 @@
 const Ingredient = require("../models/ingredient");
 
-const getIngredients = async (value) => {
+const getRecipeByIngredient = async (value) => {
   if (value) {
     return await Ingredient.find({
       ttl: {
@@ -13,5 +13,5 @@ const getIngredients = async (value) => {
 };
 
 module.exports = {
-  getIngredients,
+  getRecipeByIngredient,
 };
