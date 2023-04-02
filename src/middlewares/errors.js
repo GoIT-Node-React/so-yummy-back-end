@@ -1,5 +1,5 @@
-const { responseError } = require("../helpers/apiHelpers");
-const { BaseError, ServerError } = require("../helpers/errors");
+const { responseError } = require('../helpers/apiHelpers');
+const { BaseError, ServerError } = require('../helpers/errors');
 
 // eslint-disable-next-line no-unused-vars
 const errorMiddleware = (error, _req, res, _next) => {

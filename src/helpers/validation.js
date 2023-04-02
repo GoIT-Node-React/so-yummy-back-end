@@ -3,6 +3,7 @@ const Joi = require('joi');
 const { RequestFieldType } = require('../types');
 const { ValidationError } = require('./errors');
 const cloudinary = require('cloudinary');
+
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
   if (!isValidObjectId(value)) {
@@ -25,7 +26,12 @@ const validationFields = {
   instructions: Joi.string().min(10),
   description: Joi.string().min(8),
   time: Joi.string().min(1),
-  ingredients: Joi.array(),
+  ingredients: Joi.array().items(
+    Joi.object({
+      id: Joi.string().custom(idValidation, 'Invalid id').required(),
+      measure: Joi.string().min(1).required(),
+    })
+  ),
 };
 
 // Email validation for mongoose schema

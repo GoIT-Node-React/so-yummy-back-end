@@ -1,11 +1,7 @@
-const Joi = require("Joi");
+const Joi = require('joi');
 
-const { RequestFieldType } = require("../types");
-const {
-  validationFields,
-  validationRequest,
-  validationRequestWithImg,
-} = require("../helpers/validation");
+const { RequestFieldType } = require('../types');
+const { validationFields, validationRequest, validationRequestWithImg } = require('../helpers/validation');
 
 const recipeSchema = Joi.object({
   title: validationFields.title.required(),
