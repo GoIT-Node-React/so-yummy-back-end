@@ -1,6 +1,6 @@
 const { isValidObjectId } = require('mongoose');
 const Joi = require('joi');
-const { RequestFieldType } = require('../types');
+const { RequestFieldType, SearchType } = require('../types');
 const { ValidationError } = require('./errors');
 const cloudinary = require('cloudinary');
 
@@ -33,7 +33,7 @@ const validationFields = {
     })
   ),
   // Search, ingredients
-  type: Joi.string(),
+  type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
   // Pages
   page: Joi.number().integer().min(1),
