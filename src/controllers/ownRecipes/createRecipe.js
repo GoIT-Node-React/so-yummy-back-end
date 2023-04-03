@@ -1,8 +1,8 @@
-const cloudinary = require("cloudinary");
+const cloudinary = require('cloudinary');
 
-const { ValidationError } = require("../../helpers/errors");
-const { asyncWrapper, responseData } = require("../../helpers/apiHelpers");
-const { ownRecipes: service } = require("../../services");
+const { ValidationError } = require('../../helpers/errors');
+const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
+const { ownRecipes: service } = require('../../services');
 
 const createRecipe = async (req, res) => {
   const { id: owner } = req.user;
@@ -17,10 +17,6 @@ const createRecipe = async (req, res) => {
   try {
     const recipe = await service.create(data);
 
-    if (!recipe) {
-      return new Error();
-    }
-
     res.status(201).json(
       responseData(
         {
@@ -30,8 +26,8 @@ const createRecipe = async (req, res) => {
       )
     );
   } catch (error) {
-    await cloudinary.v2.uploader.destroy(req.file.filename, "image");
-    throw new ValidationError("Validation error");
+    await cloudinary.v2.uploader.destroy(req.file.filename, 'image');
+    throw new ValidationError('Validation error');
   }
 };
 
