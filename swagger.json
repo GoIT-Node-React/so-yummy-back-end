@@ -1373,10 +1373,6 @@
           "403": {
             "description": "Forbidden"
           },
-          "404": {
-            "description": "Not found (no recipe or ingredient found for your search criteria)",
-            "content": {}
-          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -1394,7 +1390,18 @@
             "Bearer": []
           }
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "value",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 30
+            },
+            "description": "Search's query"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -1416,7 +1423,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "recipes": {
+                        "ingredients": {
                           "type": "array",
                           "items": {
                             "type": "object",
@@ -1426,20 +1433,25 @@
                                 "description": "User id (ObjectId)",
                                 "example": "640cd5ac2d9fecf12e889837"
                               },
-                              "title": {
+                              "ttl": {
                                 "type": "string",
-                                "description": "Name of recipe",
-                                "example": "Teriyaki Chicken Casserole"
+                                "description": "The name of the ingredient",
+                                "example": "Salmon"
                               },
-                              "description": {
+                              "desc": {
                                 "type": "string",
-                                "description": "A brief description of the dish",
-                                "example": "A fusion dish that combines the flavors of chicken fajitas with creamy mac and cheese"
+                                "description": "Detailed description of the ingredient",
+                                "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae. Other fish in the same family include trout, char, grayling and whitefish. Salmon are native to tributaries of the North Atlantic (genus Salmo) and Pacific Ocean (genus Oncorhynchus). Many species of salmon have been introduced into non-native environments such as the Great Lakes of North America and Patagonia in South America. Salmon are intensively farmed in many parts of the world.\r\n\nTypically, salmon are anadromous: they hatch in fresh water, migrate to the ocean, then return to fresh water to reproduce. However, populations of several species are restricted to fresh water through their lives. Folklore has it that the fish return to the exact spot where they hatched to spawn. Tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon. Homing behavior has been shown to depend on olfactory memory. Salmon date back to the Neogene."
                               },
-                              "thumb": {
+                              "t": {
                                 "type": "string",
-                                "description": "Large image of the dish",
-                                "example": "https://www.themealdb.com/images/media/meals/qrqywr1503066605.jpg"
+                                "description": "",
+                                "example": ""
+                              },
+                              "thb": {
+                                "type": "string",
+                                "description": "Small image of the ingredient",
+                                "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
                               }
                             }
                           }
@@ -1456,10 +1468,6 @@
           },
           "403": {
             "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not found (no recipe or ingredient found for your search criteria)",
-            "content": {}
           },
           "500": {
             "description": "Internal Server Error"
@@ -2341,16 +2349,6 @@
           }
         }
       },
-      "IngredientsRequest": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string",
-            "description": "The name of the ingredient",
-            "example": "Salmon"
-          }
-        }
-      },
       "IngredientsResponse": {
         "type": "object",
         "properties": {
@@ -2368,32 +2366,35 @@
             "type": "object",
             "properties": {
               "ingredients": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "description": "User id",
-                    "example": "640cd5ac2d9fecf12e889837"
-                  },
-                  "ttl": {
-                    "type": "string",
-                    "description": "The name of the ingredient",
-                    "example": "Salmon"
-                  },
-                  "desc": {
-                    "type": "string",
-                    "description": "Detailed description of the ingredient",
-                    "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae. Other fish in the same family include trout, char, grayling and whitefish. Salmon are native to tributaries of the North Atlantic (genus Salmo) and Pacific Ocean (genus Oncorhynchus). Many species of salmon have been introduced into non-native environments such as the Great Lakes of North America and Patagonia in South America. Salmon are intensively farmed in many parts of the world.\r\n\nTypically, salmon are anadromous: they hatch in fresh water, migrate to the ocean, then return to fresh water to reproduce. However, populations of several species are restricted to fresh water through their lives. Folklore has it that the fish return to the exact spot where they hatched to spawn. Tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon. Homing behavior has been shown to depend on olfactory memory. Salmon date back to the Neogene."
-                  },
-                  "t": {
-                    "type": "string",
-                    "description": "",
-                    "example": ""
-                  },
-                  "thb": {
-                    "type": "string",
-                    "description": "Small image of the ingredient",
-                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "User id (ObjectId)",
+                      "example": "640cd5ac2d9fecf12e889837"
+                    },
+                    "ttl": {
+                      "type": "string",
+                      "description": "The name of the ingredient",
+                      "example": "Salmon"
+                    },
+                    "desc": {
+                      "type": "string",
+                      "description": "Detailed description of the ingredient",
+                      "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae. Other fish in the same family include trout, char, grayling and whitefish. Salmon are native to tributaries of the North Atlantic (genus Salmo) and Pacific Ocean (genus Oncorhynchus). Many species of salmon have been introduced into non-native environments such as the Great Lakes of North America and Patagonia in South America. Salmon are intensively farmed in many parts of the world.\r\n\nTypically, salmon are anadromous: they hatch in fresh water, migrate to the ocean, then return to fresh water to reproduce. However, populations of several species are restricted to fresh water through their lives. Folklore has it that the fish return to the exact spot where they hatched to spawn. Tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon. Homing behavior has been shown to depend on olfactory memory. Salmon date back to the Neogene."
+                    },
+                    "t": {
+                      "type": "string",
+                      "description": "",
+                      "example": ""
+                    },
+                    "thb": {
+                      "type": "string",
+                      "description": "Small image of the ingredient",
+                      "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
+                    }
                   }
                 }
               }

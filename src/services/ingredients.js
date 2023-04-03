@@ -1,17 +1,15 @@
-const Ingredient = require("../models/ingredient");
+const Ingredient = require('../models/ingredient');
 
-const getRecipeByIngredient = async (value) => {
+const getIngredients = async (value) => {
+  const searchQuery = {};
+
   if (value) {
-    return await Ingredient.find({
-      ttl: {
-        $regex: new RegExp(value, "i"),
-      },
-    });
+    searchQuery.ttl = { $regex: new RegExp(value, 'i') };
   }
 
-  return await Ingredient.find();
+  return await Ingredient.find(searchQuery);
 };
 
 module.exports = {
-  getRecipeByIngredient,
+  getIngredients,
 };
