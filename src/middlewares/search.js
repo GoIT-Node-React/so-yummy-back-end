@@ -6,8 +6,8 @@ const RequestFieldType = require('../types/requestFieldType');
 const querySchema = Joi.object({
   type: validationFields.type.required(),
   value: validationFields.value.required(),
-  page: validationFields.type.optional(),
-  limit: validationFields.value.optional(),
+  page: validationFields.page.optional(),
+  limit: validationFields.limit.optional(),
 });
 
 module.exports = {

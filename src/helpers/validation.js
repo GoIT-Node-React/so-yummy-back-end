@@ -1,13 +1,13 @@
 const { isValidObjectId } = require('mongoose');
 const Joi = require('joi');
-const { RequestFieldType } = require('../types');
+const { RequestFieldType, SearchType } = require('../types');
 const { ValidationError } = require('./errors');
 const cloudinary = require('cloudinary');
 
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
   if (!isValidObjectId(value)) {
-    return helpers.error('ObjectId.invalid');
+    return helpers.message('"id" should be of type "ObjectId"');
   }
 
   // Return the value unchanged
@@ -33,11 +33,11 @@ const validationFields = {
     })
   ),
   // Search, ingredients
-  type: Joi.string(),
+  type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
-  //
-  page: Joi.number().min(1),
-  limit: Joi.number().min(1),
+  // Pages
+  page: Joi.number().integer().min(1),
+  limit: Joi.number().integer().min(1),
 };
 
 // Email validation for mongoose schema

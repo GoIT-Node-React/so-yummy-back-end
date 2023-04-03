@@ -1,4 +1,4 @@
-const { asyncWrapper } = require('../../helpers/apiHelpers');
+const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
 const { NotFoundError } = require('../../helpers/errors');
 const { ownRecipes: service } = require('../../services');
 
@@ -12,9 +12,14 @@ const deleteRecipe = async (req, res) => {
     throw new NotFoundError('Recipe with this id not found');
   }
 
-  res.json({
-    message: 'Recipe deleted',
-  });
+  res.status(200).json(
+    responseData(
+      {
+        recipe: result,
+      },
+      200
+    )
+  );
 };
 
 module.exports = asyncWrapper(deleteRecipe);
