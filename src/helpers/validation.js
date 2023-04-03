@@ -32,6 +32,12 @@ const validationFields = {
       measure: Joi.string().min(1).required(),
     })
   ),
+  // Search, ingredients
+  type: Joi.string(),
+  value: Joi.string().min(1).max(30),
+  //
+  page: Joi.string(),
+  limit: Joi.string(),
 };
 
 // Email validation for mongoose schema

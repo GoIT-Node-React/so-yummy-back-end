@@ -4,4 +4,6 @@ module.exports = {
   recipe: require('./recipe'),
   upload: require('./uploadRecipeImage'),
   googleAuth: require('./google-auth'),
+  search: require('./search'),
+  ingredients: require('./ingredients'),
 };
