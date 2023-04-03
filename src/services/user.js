@@ -1,46 +1,4 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const { UnAuthorizedError } = require('../helpers/errors');
 const { User } = require('../models');
-
-const { JWT_SECRET } = process.env;
-
-// Registrer user
-const register = async (candidate) => {
-  const user = new User(candidate);
-  await user.save();
-
-  return user;
-};
-
-// Login
-const login = async (candidate) => {
-  const user = await getUserByEmail(candidate.email);
-
-  if (!user || !(await user.validPassword(candidate.password))) {
-    throw new UnAuthorizedError('Email or password is wrong');
-  }
-
-  // TODO: Add email verification check
-  // if (!user.verify) {
-  //   throw new UnAuthorizedError('Please, verify your email');
-  // }
-
-  const payload = {
-    id: user._id,
-  };
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
-  await user.updateOne({ token }, { new: true });
-
-  return { token, user };
-};
-
-// Logout
-const logout = async (id) => {
-  await User.findByIdAndUpdate(id, { token: null });
-
-  return true;
-};
 
 // Get user by email
 const getUserByEmail = async (email) => {
@@ -63,11 +21,37 @@ const getUserById = async (id) => {
   return user;
 };
 
+// Get user by refresh token
+const getUserByRefreshToken = async (refreshToken) => {
+  const user = await User.findOne({ refreshToken });
+
+  return user;
+};
+
+// updateUserProfileData
+const updateUserProfile = async (id, data) => {
+  const user = await User.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
+
+  return user;
+};
+
+const checkSubscriptionStatus = async (id, email) => {
+  const [currentUserProfile, userSubscribedByEmail] = await Promise.all([
+    User.findById(id),
+    User.findOne({ subscription: email }),
+  ]);
+
+  return { currentUserProfile, userSubscribedByEmail };
+};
+
 module.exports = {
-  register,
-  login,
-  logout,
   getUserByEmail,
+  getUserByRefreshToken,
   getUserByVerificationToken,
   getUserById,
+  updateUserProfile,
+  checkSubscriptionStatus,
 };

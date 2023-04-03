@@ -1,29 +1,28 @@
-const mongoose = require("mongoose");
-const { Schema, model } = mongoose;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const ingredientSchema = new Schema(
+const ingredient = new Schema(
   {
     ttl: {
       type: String,
-      required: [true, "number is required"],
+      required: [true, 'Recipe title is required'],
     },
     desc: {
       type: String,
-      required: [true, "number is required"],
+      require: [true, 'Recipe description is required'],
     },
     t: {
       type: String,
-      required: [true, "number is required"],
+      default: '',
     },
     thb: {
       type: String,
-      required: [true, "number is required"],
+      required: [true, 'Set image'],
     },
-  
   },
-  { versionKey: false, timestamps: true }
+  { timestamps: true }
 );
 
-const Ingredient = mongoose.model("Ingredient", ingredientSchema);
+const Ingredient = mongoose.model('ingredient', ingredient);
 
 module.exports = Ingredient;

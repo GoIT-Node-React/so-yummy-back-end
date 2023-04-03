@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const { isEmailValid } = require('../helpers/validation');
 
 const schema = new mongoose.Schema(
@@ -26,9 +27,13 @@ const schema = new mongoose.Schema(
     },
     subscription: {
       type: String,
+      default: '',
+    },
+    refreshToken: {
+      type: String,
       default: null,
     },
-    token: { type: String, default: null },
+    accessToken: { type: String, default: null },
     verify: {
       type: Boolean,
       default: false,
@@ -38,7 +43,7 @@ const schema = new mongoose.Schema(
       required: [true, 'Verify token is required'],
     },
   },
-  { timestamps: true }
+  { versionKey: false, timestamps: true }
 );
 
 schema.pre('save', async function () {
@@ -51,6 +56,6 @@ schema.methods.validPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-const UserModel = mongoose.model('User', schema);
+const UserModel = mongoose.model('user', schema);
 
 module.exports = UserModel;
