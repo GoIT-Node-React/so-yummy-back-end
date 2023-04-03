@@ -1,28 +1,55 @@
 const Recipe = require('../../models/recipe');
-const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
+const { asyncWrapper, } = require('../../helpers/apiHelpers');
+
 
 const getRecipesByCategory = async (req, res) => {
-  const {limit, page,} = req.query;
-  const { category} = req.params;
-  const skip = (page - 1) * limit;
-
-  const sort = { name: 1 }; // sort by name in ascending order
-
-  const filter = category ? { category } : {}; // filter by category if provided
+  const PAGE_SIZE = 10;
+  const page = req.query.page ? parseInt(req.query.page) : 1;
+  const skip = (page - 1) * PAGE_SIZE;
   
-  const recipes = Recipe.find(filter).sort(sort).skip(skip).limit(limit);
+  Recipe.find({})
+    .sort({ created_date: -1 })
+    .skip(skip)
+    .limit(PAGE_SIZE)
+    .exec((err, recipes) => {
+      Recipe.countDocuments().exec(( count) => {        
+          const totalPages = Math.ceil(count / PAGE_SIZE);
+          res.render("recipes", {
+            recipes,
+            totalPages,
+            currentPage: page,
+            pages: Array.from({ length: totalPages }, (_, i) => i + 1),
+          })      
+            
+      });  
+    })
+  };
 
-  return res.status(200).json(
-    responseData(
-      {
-        recipes: recipes,
-      },
-      200
-    )
-  );
-};
 
 module.exports = asyncWrapper(getRecipesByCategory);
 
 
-// pagination for Recipe page = 1, limit = 10, categories  for MongoDB
+
+// const gettRecipesByCategory = async (req, res) => {
+//   const PAGE_SIZE = 10;
+//   const page = req.query.page ? parseInt(req.query.page) : 1;
+//   const skip = (page - 1) * PAGE_SIZE;
+  
+//     const [recipes, count] = await Promise.all([
+//       Recipe.find({})
+//         .sort({ created_date: -1 })
+//         .skip(skip)
+//         .limit(PAGE_SIZE),
+//       Recipe.countDocuments()
+//     ]);
+
+//     const totalPages = Math.ceil(count / PAGE_SIZE);
+    
+//     res.render("recipes", {
+//       recipes,
+//       totalPages,
+//       currentPage: page,
+//       pages: Array.from({ length: totalPages }, (_, i) => i + 1),
+//     });
+// };
+

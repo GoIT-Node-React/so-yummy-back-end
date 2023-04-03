@@ -3,7 +3,6 @@ const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
 
 
 
-
 const getAllRecipes = async (req, res) => {
 let {limit = 10, page = 1} = req.query;
 
