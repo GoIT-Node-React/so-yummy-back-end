@@ -4,15 +4,8 @@ require("dotenv").config();
 
 const { user: service } = require("../services");
 const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
-const {
-    DatabaseError,
-    NotFoundError,
-    ValidationError,
-} = require("../helpers/errors");
+const { DatabaseError, NotFoundError } = require("../helpers/errors");
 const { convertUserData } = require("../helpers/convertUserData");
-
-const cloudinary = require("cloudinary").v2;
-const { User } = require("../models");
 
 // TODO: Email verification
 /* require('dotenv').config();
@@ -133,40 +126,46 @@ const currentUser = async (req, res) => {
 };*/
 
 const editProfile = async (req, res, next) => {
-    if (!req?.file && !req.body?.name) {
-        throw new ValidationError("No data to update. Bad Request");
-    }
-
     const { id } = req.user;
     const { name: newName } = req.body;
     const { name: currentName } = req.user;
     const imageUrl = req?.file?.path;
-    let user = null;
+
+    const updateDataObj = {};
 
     if (newName && newName !== currentName && imageUrl) {
-        user = await service.updateUserProfile(id, {
-            name: newName,
-            avatarURL: imageUrl,
-        });
-    } else if (newName === currentName && imageUrl) {
-        user = await service.updateUserProfile(id, { avatarUrl: imageUrl });
-    } else if (!newName && imageUrl) {
-        user = await service.updateUserProfile(id, { avatarUrl: imageUrl });
-    } else if (newName !== currentName && !imageUrl) {
-        user = await service.updateUserProfile(id, { name: newName });
-    } else {
-        user = req.user;
+        updateDataObj.name = newName;
+        updateDataObj.avatarURL = imageUrl;
     }
 
-    if (!user) {
-        throw new NotFoundError("User is not found");
+    if (newName === currentName && imageUrl) {
+        updateDataObj.avatarURL = imageUrl;
     }
 
+    if (!newName && imageUrl) {
+        updateDataObj.avatarURL = imageUrl;
+    }
+
+    if (newName !== currentName && !imageUrl) {
+        updateDataObj.name = newName;
+    }
+
+    if (Object.keys(updateDataObj).length === 0) {
+        res.status(200).json(
+            responseData(
+                {
+                    user: convertUserData(req.user),
+                },
+                200
+            )
+        );
+    }
+
+    const user = await service.updateUserProfile(id, updateDataObj);
     res.status(200).json(
         responseData(
             {
-                name: user.name,
-                avatarURL: user.avatarURL,
+                user: convertUserData(user),
             },
             200
         )
@@ -177,19 +176,24 @@ const addSubscription = async (req, res, next) => {
     const { id } = req.user;
     const { email } = req.body;
 
-    const {
-        isAlreadySubscribed,
-        isEmailBusyByCurrentUser,
-        isEmailBusyByAnotherUser,
-    } = await service.checkSubscriptionStatus(id, email);
+    const { currentUserProfile, userSubscribedByEmail } =
+        await service.checkSubscriptionStatus(id, email);
 
-    if (isAlreadySubscribed) {
+    const isSubscribed = currentUserProfile?.subscription === email;
+    const isSubscribedAtAnotherEmail =
+        currentUserProfile?.subscription !== null &&
+        currentUserProfile?.subscription !== "" &&
+        currentUserProfile?.subscription !== email;
+    const isEmailBusyByAnotherUser =
+        userSubscribedByEmail && userSubscribedByEmail?._id !== id;
+
+    if (isSubscribedAtAnotherEmail) {
         throw new DatabaseError(
             "You are already subscribed to the newsletter but with a different email address"
         );
     }
 
-    if (isEmailBusyByCurrentUser) {
+    if (isSubscribed) {
         throw new DatabaseError("You are already subscribed to the newsletter");
     }
 
@@ -210,7 +214,7 @@ const addSubscription = async (req, res, next) => {
     res.status(200).json(
         responseData(
             {
-                subscription: updatedUser.subscription,
+                user: convertUserData(updatedUser),
             },
             200
         )

@@ -3,4 +3,6 @@ module.exports = {
     auth: require("./auth"),
     user: require("./user"),
     uploadAvatar: require("./uploadAvatar"),
+    isReqDataMissing: require("./isReqDataMissing"),
+    isUploadAvatarError: require("./handleUploadAvatarError"),
 };

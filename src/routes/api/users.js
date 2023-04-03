@@ -1,14 +1,22 @@
 const express = require("express");
 const { user: controller } = require("../../controllers");
-const { user: middleware, auth, uploadAvatar } = require("../../middlewares");
+const {
+    user: middleware,
+    auth,
+    uploadAvatar,
+    isReqDataMissing,
+    isUploadAvatarError,
+} = require("../../middlewares");
 
 const usersRouter = express.Router();
 
 usersRouter.patch(
     "/",
     auth,
-    middleware.edit,
     uploadAvatar.single("avatar"),
+    isUploadAvatarError,
+    isReqDataMissing,
+    middleware.edit,
     controller.editProfile
 );
 

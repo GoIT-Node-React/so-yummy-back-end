@@ -2,6 +2,7 @@ const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 require("dotenv").config();
+const { ValidationError } = require("../helpers/errors");
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,27 +13,31 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: (req, file) => {
-        // const userName = (req) => {
-        //     const { name: currentName } = req.user;
-        //     const { name: newName } = req.body;
-
-        //     if (newName) {
-        //         return newName;
-        //     } else {
-        //         return currentName;
-        //     }
-        // };
         return {
             folder: "avatars",
-            allowedFormats: ["jpg", "png"],
+            allowedFormats: ["jpg", "jpeg", "png"],
             public_id: `${req.user.id}`,
-            transformation: [{ width: 250, height: 250, crop: "limit" }],
+            transformation: [
+                { width: 250, height: 250, crop: "limit" },
+                { quality: 100 },
+                { fetch_format: "auto" },
+                { format: "jpg", filename: `${req.user.id}` },
+            ],
         };
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${req.user.name}_${req.user.id}`);
     },
 });
 
-const uploadAvatar = multer({ storage });
+
+const uploadAvatar = multer({
+    storage: storage,
+    fileFilter: function (req, file, cb) {
+        if (file.mimetype.split("/")[0] !== "image") {
+            return cb(
+                new ValidationError("You can upload only the image file")
+            );
+        }
+        cb(null, true);
+    },
+});
+
 module.exports = uploadAvatar;

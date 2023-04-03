@@ -74,15 +74,10 @@ const updateUserProfile = async (id, data) => {
 };
 
 const checkSubscriptionStatus = async (id, email) => {
-    const user = await User.findById(id);
-    const result = await User.findOne({ subscription: email });
+    const currentUserProfile = await User.findById(id);
+    const userSubscribedByEmail = await User.findOne({ subscription: email });
 
-    return {
-        isAlreadySubscribed:
-            user?.subscription !== null && user?.subscription !== email,
-        isEmailBusyByCurrentUser: user?.subscription === email,
-        isEmailBusyByAnotherUser: result && result?._id !== id ? true : false,
-    };
+    return { currentUserProfile, userSubscribedByEmail };
 };
 
 module.exports = {
