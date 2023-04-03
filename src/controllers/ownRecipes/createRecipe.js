@@ -6,6 +6,7 @@ const { ownRecipes: service } = require('../../services');
 
 const createRecipe = async (req, res) => {
   const { id: owner } = req.user;
+
   const recipeData = req.body;
   const data = {
     ...recipeData,
