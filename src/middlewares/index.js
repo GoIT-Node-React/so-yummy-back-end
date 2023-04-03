@@ -8,5 +8,5 @@ module.exports = {
   pagination: require('./pagination'),
   user: require('./user'),
   uploadImage: require('./uploadImage'),
-  shoppingList: require('./shopping-list'),
+  shoppingList: require('./shoppingList'),
 };
