@@ -2,20 +2,30 @@ const Recipe = require("../models/recipe");
 
 const getRecipeByTitle = async (type, value, page, limit) => {
   if (type === "title") {
-    return await Recipe.find(
+    return await Recipe.aggregate([
+      { $match: { title: { $regex: new RegExp(value, "i") } } },
       {
-        title: {
-          $regex: new RegExp(value, "i"),
+        $facet: {
+          recipes: [{ $skip: parseInt(page) }, { $limit: parseInt(limit) }],
+          count: [{ $count: "total" }],
         },
       },
-      { _id: 1, title: 1, thumb: 1, description: 1 }
-    )
-      .skip(page * limit)
-      .limit(limit);
+      {
+        $project: {
+          recipes: {
+            _id: true,
+            title: true,
+            thumb: true,
+            description: true,
+          },
+          total: { $arrayElemAt: ["$count.total", 0] },
+        },
+      },
+    ]);
   }
 
   if (type === "ingredient") {
-    return await Recipe.aggregate([
+    const recipes = await Recipe.aggregate([
       {
         $lookup: {
           from: "ingredients",
@@ -25,10 +35,26 @@ const getRecipeByTitle = async (type, value, page, limit) => {
         },
       },
       { $match: { "ingredients.ttl": { $regex: new RegExp(value, "i") } } },
-      { $project: { _id: true, title: true, thumb: true } },
-      { $skip: parseInt(page) },
-      { $limit: parseInt(limit) },
+      {
+        $facet: {
+          recipes: [{ $skip: parseInt(page) }, { $limit: parseInt(limit) }],
+          count: [{ $count: "total" }],
+        },
+      },
+      {
+        $project: {
+          recipes: {
+            _id: true,
+            title: true,
+            thumb: true,
+            description: true,
+          },
+          total: { $arrayElemAt: ["$count.total", 0] },
+        },
+      },
     ]);
+
+    return recipes;
   }
 };
 
