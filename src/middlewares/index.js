@@ -6,4 +6,5 @@ module.exports = {
   googleAuth: require('./google-auth'),
   search: require('./search'),
   ingredients: require('./ingredients'),
+  pagination: require('./pagination'),
 };

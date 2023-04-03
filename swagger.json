@@ -1088,17 +1088,20 @@
             "in": "query",
             "name": "page",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1
             },
-            "description": "Number of current page"
+            "description": "The number of page"
           },
           {
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
             },
-            "description": "Amount of recipes per page"
+            "description": "The numbers of items to return"
           }
         ],
         "responses": {
@@ -1129,7 +1132,7 @@
                             "properties": {
                               "_id": {
                                 "type": "string",
-                                "description": "Recipe's id, created MongoDB"
+                                "description": "Recipe's id (ObjectId)"
                               },
                               "title": {
                                 "type": "string",
@@ -1197,7 +1200,7 @@
                                   "properties": {
                                     "id": {
                                       "type": "string",
-                                      "description": "Ingredient's id"
+                                      "description": "Ingredient's id (ObjectId)"
                                     },
                                     "measure": {
                                       "type": "string",
@@ -1241,7 +1244,7 @@
             }
           },
           "400": {
-            "description": "Bad request (invalid request body)"
+            "description": "Bad request (invalid request query)"
           },
           "401": {
             "description": "Unauthorized"
@@ -2193,7 +2196,7 @@
                   "properties": {
                     "_id": {
                       "type": "string",
-                      "description": "Recipe's id, created MongoDB"
+                      "description": "Recipe's id (ObjectId)"
                     },
                     "title": {
                       "type": "string",
@@ -2261,7 +2264,7 @@
                         "properties": {
                           "id": {
                             "type": "string",
-                            "description": "Ingredient's id"
+                            "description": "Ingredient's id (ObjectId)"
                           },
                           "measure": {
                             "type": "string",
