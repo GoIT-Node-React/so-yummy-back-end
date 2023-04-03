@@ -1,9 +1,13 @@
-const express = require("express");
-const logger = require("morgan");
-const cors = require("cors");
-const { responseError } = require("./helpers/apiHelpers");
-const { RouteNotFoundError } = require("./helpers/errors");
-const { errorMiddleware } = require("./middlewares/errors");
+const express = require('express');
+const logger = require('morgan');
+const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
+const { responseError } = require('./helpers/apiHelpers');
+const { RouteNotFoundError } = require('./helpers/errors');
+const { error: errorMiddleware } = require('./middlewares');
+const routes = require('./routes/api');
+
 
 const app = express();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -14,7 +18,10 @@ app.use(express.json());
 
 
 // add you routes here
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api/auth', routes.auth);
+app.use("/api/ingredients", routes.ingredientRouter);
+app.use("/api/shopping-list", routes.shoppingListRouter);
 //==========================
 
 app.use((_, res) => {
