@@ -1,30 +1,25 @@
-const express = require("express");
-const { user: controller } = require("../../controllers");
+const express = require('express');
+const { user: controller } = require('../../controllers');
 const {
-    user: middleware,
-    auth,
-    uploadAvatar,
-    isReqDataMissing,
-    isUploadAvatarError,
-} = require("../../middlewares");
+  user: middleware,
+  auth: authMiddleware,
+  uploadAvatar,
+  isReqDataMissing,
+  isUploadAvatarError,
+} = require('../../middlewares');
 
 const usersRouter = express.Router();
 
+usersRouter.use(authMiddleware.auth);
 usersRouter.patch(
-    "/",
-    auth,
-    uploadAvatar.single("avatar"),
-    isUploadAvatarError,
-    isReqDataMissing,
-    middleware.edit,
-    controller.editProfile
+  '/',
+  uploadAvatar.single('avatar'),
+  isUploadAvatarError,
+  isReqDataMissing,
+  middleware.edit,
+  controller.editProfile
 );
 
-usersRouter.patch(
-    "/subscribe",
-    auth,
-    middleware.subscribe,
-    controller.addSubscription
-);
+usersRouter.patch('/subscribe', middleware.subscribe, controller.addSubscription);
 
 module.exports = usersRouter;
