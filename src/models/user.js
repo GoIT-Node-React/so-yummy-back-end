@@ -28,7 +28,11 @@ const schema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    token: { type: String, default: null },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
+    accessToken: { type: String, default: null },
     verify: {
       type: Boolean,
       default: false,
@@ -38,7 +42,7 @@ const schema = new mongoose.Schema(
       required: [true, 'Verify token is required'],
     },
   },
-  { timestamps: true }
+  { versionKey: false, timestamps: true }
 );
 
 schema.pre('save', async function () {
@@ -51,6 +55,6 @@ schema.methods.validPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-const UserModel = mongoose.model('User', schema);
+const UserModel = mongoose.model('user', schema);
 
 module.exports = UserModel;
