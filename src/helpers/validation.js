@@ -36,8 +36,8 @@ const validationFields = {
   type: Joi.string(),
   value: Joi.string().min(1).max(30),
   //
-  page: Joi.string(),
-  limit: Joi.string(),
+  page: Joi.number().min(1),
+  limit: Joi.number().min(1),
 };
 
 // Email validation for mongoose schema
