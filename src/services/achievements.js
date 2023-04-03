@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User } = require('../models');
 
 const achievements = async (id) => {
   const result = await User.aggregate([
@@ -7,12 +7,12 @@ const achievements = async (id) => {
     },
     {
       $lookup: {
-        from: "recipes",
-        let: { userId: "$_id" },
+        from: 'recipes',
+        let: { userId: '$_id' },
         pipeline: [
           {
             $match: {
-              $expr: { $eq: ["$favorites", "$$userId"] },
+              $expr: { $eq: ['$favorites', '$$userId'] },
             },
           },
           {
@@ -28,17 +28,17 @@ const achievements = async (id) => {
             },
           },
         ],
-        as: "favoriteRecipes",
+        as: 'favoriteRecipes',
       },
     },
     {
       $lookup: {
-        from: "shoppinglists",
-        let: { userId: "$_id" },
+        from: 'shoppinglists',
+        let: { userId: '$_id' },
         pipeline: [
           {
             $match: {
-              $expr: { $eq: ["$userId", "$$userId"] },
+              $expr: { $eq: ['$userId', '$$userId'] },
             },
           },
           {
@@ -54,24 +54,21 @@ const achievements = async (id) => {
             },
           },
         ],
-        as: "shoppingLists",
+        as: 'shoppingLists',
       },
     },
     {
       $project: {
         daysSinceCreated: {
           $floor: {
-            $divide: [
-              { $subtract: [new Date(), "$createdAt"] },
-              1000 * 60 * 60 * 24,
-            ],
+            $divide: [{ $subtract: [new Date(), '$createdAt'] }, 1000 * 60 * 60 * 24],
           },
         },
         favoriteRecipesCount: {
-          $ifNull: [{ $first: "$favoriteRecipes.count" }, 0],
+          $ifNull: [{ $first: '$favoriteRecipes.count' }, 0],
         },
         shoppingListsCount: {
-          $ifNull: [{ $first: "$shoppingLists.count" }, 0],
+          $ifNull: [{ $first: '$shoppingLists.count' }, 0],
         },
       },
     },

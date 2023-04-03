@@ -1,13 +1,13 @@
-const { isValidObjectId } = require("mongoose");
-const Joi = require("joi");
-const { RequestFieldType } = require("../types");
-const { ValidationError } = require("./errors");
-const cloudinary = require("cloudinary");
+const { isValidObjectId } = require('mongoose');
+const Joi = require('joi');
+const { RequestFieldType } = require('../types');
+const { ValidationError } = require('./errors');
+const cloudinary = require('cloudinary');
 
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
   if (!isValidObjectId(value)) {
-    return helpers.error("ObjectId.invalid");
+    return helpers.error('ObjectId.invalid');
   }
 
   // Return the value unchanged
@@ -16,7 +16,7 @@ const idValidation = (value, helpers) => {
 
 // Validation rules
 const validationFields = {
-  id: Joi.string().custom(idValidation, "Invalid id"),
+  id: Joi.string().custom(idValidation, 'Invalid id'),
   name: Joi.string().min(1).max(30),
   email: Joi.string().email(),
   password: Joi.string().min(3).max(30),
@@ -28,10 +28,14 @@ const validationFields = {
   time: Joi.string().min(1),
   ingredients: Joi.array().items(
     Joi.object({
-      id: Joi.string().custom(idValidation, "Invalid id").required(),
+      id: Joi.string().custom(idValidation, 'Invalid id').required(),
       measure: Joi.string().min(1).required(),
     })
   ),
+  // Search, ingredients
+  type: Joi.string(),
+  value: Joi.string().min(1).max(30),
+  //
   page: Joi.number().min(1),
   limit: Joi.number().min(1),
 };
@@ -59,7 +63,7 @@ const validationRequestWithImg =
     const validationResult = schema.validate(req[type]);
 
     if (validationResult.error) {
-      cloudinary.v2.uploader.destroy(req.file.filename, "image");
+      cloudinary.v2.uploader.destroy(req.file.filename, 'image');
       throw new ValidationError(validationResult.error.message);
     }
 
