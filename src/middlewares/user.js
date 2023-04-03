@@ -1,36 +1,25 @@
-const Joi = require("joi");
-const {
-    validationFields,
-    validationRequest,
-} = require("../helpers/validation");
-
-const loginSchema = Joi.object({
-    email: validationFields.email.required(),
-    password: validationFields.password.required(),
-});
-
-const registerSchema = Joi.object({
-    name: validationFields.name.required(),
-    email: validationFields.email.required(),
-    password: validationFields.password.required(),
-});
+const Joi = require('joi');
+const { validationFields, validationRequest } = require('../helpers/validation');
+const { ValidationError } = require('../helpers/errors');
+const { RequestFieldType } = require('../types');
 
 const editProfileSchema = Joi.object({
-    name: validationFields.name,
+  name: validationFields.name.optional(),
 });
 
 const addSubscriptionSchema = Joi.object({
-    email: validationFields.email.required(),
+  email: validationFields.email.required(),
 });
 
-/* const emailSchema = joi.object({
-  email: validationFields.email.required(),
-});*/
+function isReqDataMissing(req, _res, next) {
+  if (req.file?.fieldname !== 'avatar' && !req.body?.name) {
+    return next(new ValidationError('No data to update'));
+  }
+  next();
+}
 
 module.exports = {
-    register: validationRequest(registerSchema, "body"),
-    login: validationRequest(loginSchema, "body"),
-    edit: validationRequest(editProfileSchema, "body"),
-    subscribe: validationRequest(addSubscriptionSchema, "body"),
-    //email: validationRequest(emailSchema, 'body'),
+  noData: isReqDataMissing,
+  edit: validationRequest(editProfileSchema, RequestFieldType.body),
+  subscribe: validationRequest(addSubscriptionSchema, RequestFieldType.body),
 };

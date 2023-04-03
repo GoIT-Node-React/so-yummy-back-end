@@ -27,7 +27,7 @@ const schema = new mongoose.Schema(
     },
     subscription: {
       type: String,
-      default: null,
+      default: '',
     },
     refreshToken: {
       type: String,

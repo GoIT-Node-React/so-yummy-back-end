@@ -39,8 +39,10 @@ const updateUserProfile = async (id, data) => {
 };
 
 const checkSubscriptionStatus = async (id, email) => {
-  const currentUserProfile = await User.findById(id);
-  const userSubscribedByEmail = await User.findOne({ subscription: email });
+  const [currentUserProfile, userSubscribedByEmail] = await Promise.all([
+    User.findById(id),
+    User.findOne({ subscription: email }),
+  ]);
 
   return { currentUserProfile, userSubscribedByEmail };
 };
