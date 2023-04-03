@@ -1,14 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
 const recipe = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Set title"],
+      required: [true, 'Set title'],
     },
     category: {
       type: String,
-      required: [true, 'Category is required']
+      required: [true, 'Category is required'],
     },
     area: {
       type: String,
@@ -16,15 +17,15 @@ const recipe = new Schema(
     },
     instructions: {
       type: String,
-      reguired: [true, 'Provide an instructions']
+      reguired: [true, 'Provide an instructions'],
     },
     description: {
       type: String,
-      require: [true, 'Description is required']
+      require: [true, 'Description is required'],
     },
     thumb: {
       type: String,
-      required: [true, 'Set image']
+      required: [true, 'Set image'],
       /*image*/
     },
     cloudinaryImageName: {
@@ -38,7 +39,7 @@ const recipe = new Schema(
     },
     time: {
       type: String,
-      required: [true, 'Set time']
+      required: [true, 'Set time'],
     },
     popularity: {
       type: Number,
@@ -60,16 +61,27 @@ const recipe = new Schema(
       type: Array,
       default: null,
     },
-    ingredients: {
-      type: Array,
-      required: true,
-    },
+    ingredients: [
+      {
+        id: {
+          type: mongoose.Types.ObjectId,
+          ref: 'ingredient',
+        },
+        measure: {
+          type: String,
+          required: [true, 'Measure is required'],
+        },
+        _id: false,
+      },
+    ],
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: 'user',
     },
   },
   { versionKey: false, timestamps: true }
 );
-const Recipe = mongoose.model("recipe", recipe);
+
+const Recipe = mongoose.model('recipe', recipe);
+
 module.exports = Recipe;

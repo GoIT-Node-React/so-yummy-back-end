@@ -1,4 +1,9 @@
 module.exports = {
   auth: require('./auth'),
-  recipes: require('./recipes')
+  ownRecipes: require('./ownRecipes'),
+  popularRecipes: require('./popularRecipes'),
+  achievements: require('./achievements'),
+  search: require('./search'),
+  ingredients: require('./ingredients'),
+  recipes: require('./recipes'),
 };

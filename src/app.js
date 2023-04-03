@@ -16,9 +16,15 @@ app.use(cors());
 app.use(express.json());
 
 // add you routes here
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/auth', routes.auth);
-app.use('/api/recipes', routes.recipes)
+app.use('/api/own-recipes', routes.ownRecipes);
+app.use('/api/popular-recipes', routes.popularRecipes);
+app.use('/api/achievements', routes.achievements);
+app.use('/api/search', routes.search);
+app.use('/api/ingredients', routes.ingredients);
+app.use('/api/recipes', routes.recipes);
 //==========================
 
 app.use((_, res) => {
@@ -26,6 +32,5 @@ app.use((_, res) => {
 });
 
 app.use(errorMiddleware);
-
 
 module.exports = app;
