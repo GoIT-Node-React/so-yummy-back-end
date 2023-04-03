@@ -9,13 +9,8 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": [
-    "application/json",
-    "multipart/form-data"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
   "servers": [
     {
       "url": "http://localhost:8001/api"
@@ -69,9 +64,7 @@
   "paths": {
     "/auth/register": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "User registration",
         "requestBody": {
           "description": "Registration's object",
@@ -80,11 +73,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "email",
-                  "password"
-                ],
+                "required": ["name", "email", "password"],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -184,9 +173,7 @@
     },
     "/auth/login": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "User login",
         "requestBody": {
           "description": "Logins's object",
@@ -195,10 +182,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
+                "required": ["email", "password"],
                 "properties": {
                   "email": {
                     "type": "string",
@@ -253,7 +237,7 @@
                           "properties": {
                             "id": {
                               "type": "string",
-                              "description": "User id",
+                              "description": "User id (ObjectId)",
                               "example": "507f1f77bcf86cd799439011"
                             },
                             "name": {
@@ -298,9 +282,7 @@
     },
     "/auth/logout": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "User logout",
         "parameters": [],
         "security": [
@@ -326,9 +308,7 @@
     },
     "/auth/current": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Get user info by token",
         "security": [
           {
@@ -409,9 +389,7 @@
     },
     "/auth/refresh": {
       "post": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Refresh token",
         "requestBody": {
           "description": "Refresh's object",
@@ -420,9 +398,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "refreshToken"
-                ],
+                "required": ["refreshToken"],
                 "properties": {
                   "refreshToken": {
                     "type": "string",
@@ -489,18 +465,225 @@
     },
     "/auth/google": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Authorization with google",
         "responses": ""
       }
     },
+    "/users": {
+      "patch": {
+        "tags": ["users"],
+        "summary": "Update user info",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Users's info object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Avatar's image"
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 30,
+                    "description": "User's name"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User update successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "User id (ObjectId)",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "User name",
+                              "example": "Andrii"
+                            },
+                            "email": {
+                              "type": "string",
+                              "description": "User email",
+                              "format": "email"
+                            },
+                            "subscription": {
+                              "type": "string",
+                              "nullable": true,
+                              "description": "User email subscription",
+                              "format": "email",
+                              "example": null
+                            },
+                            "avatarURL": {
+                              "type": "string",
+                              "description": "User avatar",
+                              "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/subscribe": {
+      "patch": {
+        "tags": ["users"],
+        "summary": "Update user subscription",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Users's subscribe object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "recuired": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Subscribe's email",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User subscribe successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "User id (ObjectId)",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "User name",
+                              "example": "Andrii"
+                            },
+                            "email": {
+                              "type": "string",
+                              "description": "User email",
+                              "format": "email"
+                            },
+                            "subscription": {
+                              "type": "string",
+                              "nullable": true,
+                              "description": "User email subscription",
+                              "format": "email",
+                              "example": null
+                            },
+                            "avatarURL": {
+                              "type": "string",
+                              "description": "User avatar",
+                              "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/own-recipes": {
       "post": {
-        "tags": [
-          "own-recipes"
-        ],
+        "tags": ["own-recipes"],
         "summary": "Create new recipe",
         "security": [
           {
@@ -514,15 +697,7 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "thumb",
-                  "title",
-                  "category",
-                  "instructions",
-                  "description",
-                  "time",
-                  "ingredients"
-                ],
+                "required": ["thumb", "title", "category", "instructions", "description", "time", "ingredients"],
                 "properties": {
                   "thumb": {
                     "type": "string",
@@ -710,9 +885,7 @@
         }
       },
       "get": {
-        "tags": [
-          "own-recipes"
-        ],
+        "tags": ["own-recipes"],
         "summary": "Get own recipes list",
         "security": [
           {
@@ -897,9 +1070,7 @@
     },
     "/own-recipes/:{recipeId}": {
       "delete": {
-        "tags": [
-          "own-recipes"
-        ],
+        "tags": ["own-recipes"],
         "summary": "Delete recipe",
         "security": [
           {
@@ -1074,9 +1245,7 @@
     },
     "/popular-recipes": {
       "get": {
-        "tags": [
-          "popular-recipes"
-        ],
+        "tags": ["popular-recipes"],
         "summary": "Get popular recipes list",
         "security": [
           {
@@ -1260,9 +1429,7 @@
     },
     "/search": {
       "get": {
-        "tags": [
-          "search"
-        ],
+        "tags": ["search"],
         "summary": "Get a recipe by recipe name or ingredient name",
         "security": [
           {
@@ -1276,10 +1443,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": [
-                "title",
-                "ingredient"
-              ]
+              "enum": ["title", "ingredient"]
             },
             "description": "Search's type"
           },
@@ -1384,9 +1548,7 @@
     },
     "/ingredients": {
       "get": {
-        "tags": [
-          "ingredients"
-        ],
+        "tags": ["ingredients"],
         "summary": "Get ingredients",
         "security": [
           {
@@ -1483,11 +1645,7 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": [
-          "name",
-          "email",
-          "password"
-        ],
+        "required": ["name", "email", "password"],
         "properties": {
           "name": {
             "type": "string",
@@ -1564,10 +1722,7 @@
       },
       "LoginRequest": {
         "type": "object",
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "properties": {
           "email": {
             "type": "string",
@@ -1614,7 +1769,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "description": "User id",
+                    "description": "User id (ObjectId)",
                     "example": "507f1f77bcf86cd799439011"
                   },
                   "name": {
@@ -1699,9 +1854,7 @@
       },
       "RefreshRequest": {
         "type": "object",
-        "required": [
-          "refreshToken"
-        ],
+        "required": ["refreshToken"],
         "properties": {
           "refreshToken": {
             "type": "string",
@@ -1742,15 +1895,7 @@
       },
       "AddOwnRecipeRequest": {
         "type": "object",
-        "required": [
-          "thumb",
-          "title",
-          "category",
-          "instructions",
-          "description",
-          "time",
-          "ingredients"
-        ],
+        "required": ["thumb", "title", "category", "instructions", "description", "time", "ingredients"],
         "properties": {
           "thumb": {
             "type": "string",
@@ -2398,6 +2543,137 @@
                       "description": "Small image of the ingredient",
                       "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "avatar": {
+            "type": "string",
+            "format": "binary",
+            "description": "Avatar's image"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 30,
+            "description": "User's name"
+          }
+        }
+      },
+      "UserUpdateResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "User id (ObjectId)",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "example": "Andrii"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email"
+                  },
+                  "subscription": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "User email subscription",
+                    "format": "email",
+                    "example": null
+                  },
+                  "avatarURL": {
+                    "type": "string",
+                    "description": "User avatar",
+                    "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "UserSubscribeRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Subscribe's email",
+            "format": "email"
+          }
+        }
+      },
+      "UserSubscribeResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "User id (ObjectId)",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "example": "Andrii"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User email",
+                    "format": "email"
+                  },
+                  "subscription": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "User email subscription",
+                    "format": "email",
+                    "example": null
+                  },
+                  "avatarURL": {
+                    "type": "string",
+                    "description": "User avatar",
+                    "example": "https://www.gravatar.com/avatar/d4d3e52f3e46c8fc33cca410a15f2fdc"
                   }
                 }
               }
