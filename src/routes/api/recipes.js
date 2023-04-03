@@ -7,7 +7,7 @@ routerRecipe.use(middleware.auth);
 routerRecipe.get('/', controller.getAllRecipes);
 routerRecipe.get('/categories', controller.getCategories);
 routerRecipe.get('/main-page', controller.getMainPage);
-routerRecipe.get('/categories/:categoryName', controller.getRecipesByCategory);
-routerRecipe.get('/:recipesId', controller.getRecipeById);
+routerRecipe.get('/categories/:categoryName', controller.getRecipesByCategory); // перевірка на належність categoryName до масиву CATEGORIES
+routerRecipe.get('/:recipesId', controller.getRecipeById); // recipesId був ObjectId
 
 module.exports = routerRecipe;

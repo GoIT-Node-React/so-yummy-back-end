@@ -6,13 +6,15 @@ const { NotFoundError } = require('../../helpers/errors');
 const getRecipeById = async (req, res) => {
   const { id } = req.params;
   const recipe = await Recipe.findOne({ _id: id });
+
   if (!recipe) {
-    throw new NotFoundError({ message: `recipe with id ${id} not found` });
+    throw new NotFoundError(`Recipe with id "${id}" not found`);
   }
+
   return res.status(200).json(
     responseData(
       {
-        recipe: recipe,
+        recipe,
       },
       200
     )

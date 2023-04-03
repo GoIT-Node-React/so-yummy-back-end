@@ -1,46 +1,26 @@
 const Recipe = require('../../models/recipe');
 const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
+const { CATEGORIES } = require('../../helpers/variables');
 
-const getMainPage = async (req, res) => {
+const getMainPage = async (_req, res) => {
   const limitNumber = 4;
-  const category = [
-    'Beef',
-    'Breakfast',
-    'Chicken',
-    'Dessert',
-    'Goat',
-    'Lamb',
-    'Miscellaneous',
-    'Pasta',
-    'Pork',
-    'Seafood',
-    'Side',
-    'Starter',
-    'Vegan',
-    'Vegeterian',
-  ];
+
   let result = {};
-  let iterator = Math.floor(
-    Math.random() * (category.length + 1 - limitNumber)
-  );
-  for (
-    let i = iterator;
-    i < iterator + limitNumber && i < category.length;
-    i++
-  ) {
-    const recipes = await Recipe.find({ category: category[i] })
-      .select({ title: 1, preview: 1 })
-      .limit(limitNumber);
-    result[category[i]] = recipes;
+  let iterator = Math.floor(Math.random() * (CATEGORIES.length + 1 - limitNumber));
+
+  for (let i = iterator; i < iterator + limitNumber && i < CATEGORIES.length; i++) {
+    const recipes = await Recipe.find({ category: CATEGORIES[i] }).select({ title: 1, preview: 1 }).limit(limitNumber);
+    result[CATEGORIES[i]] = recipes;
   }
+
   return res.status(200).json(
     responseData(
       {
-        result: result,
+        categories: result,
       },
       200
     )
   );
 };
 
-module.exports = asyncWrapper(getMainPage)
+module.exports = asyncWrapper(getMainPage);

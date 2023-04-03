@@ -1,30 +1,15 @@
 const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
+const { CATEGORIES } = require('../../helpers/variables');
 
-const getCategories = async (req, res) => {
-  const category = [
-    'Beef',
-    'Breakfast',
-    'Chicken',
-    'Dessert',
-    'Goat',
-    'Lamb',
-    'Miscellaneous',
-    'Pasta',
-    'Pork',
-    'Seafood',
-    'Side',
-    'Starter',
-    'Vegan',
-    'Vegeterian',
-  ];
+const getCategories = async (_req, res) => {
   return res.status(200).json(
     responseData(
       {
-        category: category,
+        categories: CATEGORIES,
       },
       200
     )
   );
 };
 
-module.exports =  asyncWrapper(getCategories);
+module.exports = asyncWrapper(getCategories);
