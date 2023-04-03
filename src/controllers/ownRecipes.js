@@ -4,7 +4,7 @@ const { asyncWrapper, responseData } = require('../helpers/apiHelpers');
 const { ownRecipes: service } = require('../services');
 const { ValidationError } = require('../helpers/errors');
 
-const createRecipe = async (req, res, next) => {
+const createRecipe = async (req, res) => {
   const { id: owner } = req.user;
   const recipeData = req.body;
   const data = {
@@ -15,9 +15,6 @@ const createRecipe = async (req, res, next) => {
   };
   try {
     const recipe = await service.create(data);
-    if (!recipe) {
-      return error;
-    }
 
     res.status(201).json(
       responseData(

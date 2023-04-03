@@ -1,13 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const { ingredients: middleware } = require("../../middlewares");
-const { ingredients: controller } = require("../../controllers");
+const { ingredients: middleware } = require('../../middlewares');
+const { ingredients: controller } = require('../../controllers');
 
-router.get(
-  "/",
-  middleware.getRecipeByIngredient,
-  controller.getRecipeByIngredientController
-);
+router.get('/', middleware.getIngredients, controller.getIngredients);
 
 module.exports = router;

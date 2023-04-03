@@ -1,19 +1,10 @@
-const { search: service } = require("../services");
-const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
+const { search: service } = require('../services');
+const { asyncWrapper, responseData } = require('../helpers/apiHelpers');
 
-const {
-  MAX_LIMIT_PER_PAGE,
-  DEFAULT_LIMIT_PER_PAGE,
-  DEFAULT_PAGE,
-} = require("../helpers/variables");
+const { MAX_LIMIT_PER_PAGE, DEFAULT_LIMIT_PER_PAGE, DEFAULT_PAGE } = require('../helpers/variables');
 
 const getRecipeByTitleController = async (req, res) => {
-  const {
-    type,
-    value,
-    page = DEFAULT_PAGE,
-    limit = DEFAULT_LIMIT_PER_PAGE,
-  } = req.query;
+  const { type, value, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT_PER_PAGE } = req.query;
   const result = await service.getRecipeByTitle(type, value, page, limit);
 
   const recipes = result[0].recipes;
@@ -24,10 +15,7 @@ const getRecipeByTitleController = async (req, res) => {
       {
         recipes,
         total,
-        limit:
-          parseInt(limit) > MAX_LIMIT_PER_PAGE
-            ? MAX_LIMIT_PER_PAGE
-            : parseInt(limit),
+        limit: parseInt(limit) > MAX_LIMIT_PER_PAGE ? MAX_LIMIT_PER_PAGE : parseInt(limit),
         page: parseInt(page),
       },
       200
@@ -36,5 +24,5 @@ const getRecipeByTitleController = async (req, res) => {
 };
 
 module.exports = {
-  getRecipeByTitleController: asyncWrapper(getRecipeByTitleController),
+  getRecipeByTitle: asyncWrapper(getRecipeByTitleController),
 };
