@@ -16,7 +16,12 @@ const recipeIdSchema = Joi.object({
   recipeId: validationFields.id.required(),
 });
 
+const recipeCategoryNameSchema = Joi.object({
+  category: validationFields.category.required(),
+});
+
 module.exports = {
   recipe: validationRequestWithImg(recipeSchema, RequestFieldType.body),
   recipeId: validationRequest(recipeIdSchema, RequestFieldType.params),
+  recipeCategoryName: validationRequest(recipeCategoryNameSchema, RequestFieldType.params),
 };
