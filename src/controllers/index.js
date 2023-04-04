@@ -6,4 +6,6 @@ module.exports = {
   search: require('./search'),
   ingredients: require('./ingredients'),
   user: require('./user'),
+  shoppingList: require('./shoppingList'),
+  favorites: require('./favorites'),
 };

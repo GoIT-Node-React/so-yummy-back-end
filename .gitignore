@@ -3,3 +3,4 @@ node_modules/
 public/avatars/*
 dist/
 .env
+.prettierrc.json

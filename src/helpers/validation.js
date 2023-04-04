@@ -3,6 +3,7 @@ const Joi = require('joi');
 const { RequestFieldType, SearchType } = require('../types');
 const { ValidationError } = require('./errors');
 const cloudinary = require('cloudinary');
+const { CATEGORIES } = require('./variables');
 
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
@@ -22,7 +23,7 @@ const validationFields = {
   password: Joi.string().min(3).max(30),
   refreshToken: Joi.string(),
   title: Joi.string().min(3).max(30),
-  category: Joi.string().min(3).max(40),
+  category: Joi.string().equal(...Object.values(CATEGORIES)),
   instructions: Joi.string().min(10),
   description: Joi.string().min(8),
   time: Joi.string().min(1),
@@ -35,6 +36,8 @@ const validationFields = {
   // Search, ingredients
   type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
+  // ShoppingList
+  ingredientId: Joi.string().custom(idValidation, 'Invalid id'),
   // Pages
   page: Joi.number().integer().min(1),
   limit: Joi.number().integer().min(1),
@@ -71,6 +74,7 @@ const validationRequestWithImg =
   };
 
 module.exports = {
+  idValidation,
   validationFields,
   isEmailValid,
   validationRequest,
