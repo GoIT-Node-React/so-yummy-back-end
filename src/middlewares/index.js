@@ -2,7 +2,7 @@ module.exports = {
   error: require('./errors'),
   auth: require('./auth'),
   recipe: require('./recipe'),
-  googleAuth: require('./google-auth'),
+  googleAuth: require('./googleAuth'),
   search: require('./search'),
   ingredients: require('./ingredients'),
   pagination: require('./pagination'),

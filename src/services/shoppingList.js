@@ -70,11 +70,11 @@ const add = async (data) => {
   const item = new ShoppingList(data);
   await item.save();
 
-  return item;
+  return item.populate('ingredient', '_id ttl thb');
 };
 
 const removeById = async (id, owner) => {
-  const item = await ShoppingList.findOneAndRemove({ _id: id, owner });
+  const item = await ShoppingList.findOneAndRemove({ _id: id, owner }).populate('ingredient', '_d ttl thb');
 
   return item;
 };
