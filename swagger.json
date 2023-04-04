@@ -55,10 +55,6 @@
     {
       "name": "popular-recipes",
       "description": "Popular recipes endpoints"
-    },
-    {
-      "name": "subscribe",
-      "description": "Subscribe endpoints"
     }
   ],
   "paths": {
@@ -594,7 +590,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "recuired": ["email"],
+                "required": ["email"],
                 "properties": {
                   "email": {
                     "type": "string",
@@ -710,6 +706,22 @@
                   },
                   "category": {
                     "type": "string",
+                    "enum": [
+                      "Beef",
+                      "Breakfast",
+                      "Chicken",
+                      "Dessert",
+                      "Goat",
+                      "Lamb",
+                      "Miscellaneous",
+                      "Pasta",
+                      "Pork",
+                      "Seafood",
+                      "Side",
+                      "Starter",
+                      "Vegan",
+                      "Vegeterian"
+                    ],
                     "description": "Recipe's category"
                   },
                   "instructions": {
@@ -775,6 +787,22 @@
                             },
                             "category": {
                               "type": "string",
+                              "enum": [
+                                "Beef",
+                                "Breakfast",
+                                "Chicken",
+                                "Dessert",
+                                "Goat",
+                                "Lamb",
+                                "Miscellaneous",
+                                "Pasta",
+                                "Pork",
+                                "Seafood",
+                                "Side",
+                                "Starter",
+                                "Vegan",
+                                "Vegeterian"
+                              ],
                               "description": "Recipe's category"
                             },
                             "area": {
@@ -1036,15 +1064,18 @@
                         },
                         "total": {
                           "type": "integer",
-                          "description": "Total recipe's amount"
+                          "description": "Total recipe's amount",
+                          "example": 100
                         },
                         "page": {
                           "type": "integer",
-                          "description": "Current page"
+                          "description": "Current page",
+                          "example": 1
                         },
                         "limit": {
                           "type": "integer",
-                          "description": "Recipe's amount per page"
+                          "description": "Recipe's amount per page",
+                          "example": 10
                         }
                       }
                     }
@@ -1209,15 +1240,18 @@
                       },
                       "total": {
                         "type": "integer",
-                        "description": "Total recipe's amount"
+                        "description": "Total recipe's amount",
+                        "example": 100
                       },
                       "page": {
                         "type": "integer",
-                        "description": "Current page"
+                        "description": "Current page",
+                        "example": 1
                       },
                       "limit": {
                         "type": "integer",
-                        "description": "Recipe's amount per page"
+                        "description": "Recipe's amount per page",
+                        "example": 10
                       }
                     }
                   }
@@ -1395,15 +1429,18 @@
                         },
                         "total": {
                           "type": "integer",
-                          "description": "Total recipe's amount"
+                          "description": "Total recipe's amount",
+                          "example": 100
                         },
                         "page": {
                           "type": "integer",
-                          "description": "Current page"
+                          "description": "Current page",
+                          "example": 1
                         },
                         "limit": {
                           "type": "integer",
-                          "description": "Recipe's amount per page"
+                          "description": "Recipe's amount per page",
+                          "example": 10
                         }
                       }
                     }
@@ -1606,7 +1643,7 @@
                               "desc": {
                                 "type": "string",
                                 "description": "Detailed description of the ingredient",
-                                "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae. Other fish in the same family include trout, char, grayling and whitefish. Salmon are native to tributaries of the North Atlantic (genus Salmo) and Pacific Ocean (genus Oncorhynchus). Many species of salmon have been introduced into non-native environments such as the Great Lakes of North America and Patagonia in South America. Salmon are intensively farmed in many parts of the world.\r\n\nTypically, salmon are anadromous: they hatch in fresh water, migrate to the ocean, then return to fresh water to reproduce. However, populations of several species are restricted to fresh water through their lives. Folklore has it that the fish return to the exact spot where they hatched to spawn. Tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon. Homing behavior has been shown to depend on olfactory memory. Salmon date back to the Neogene."
+                                "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae..."
                               },
                               "t": {
                                 "type": "string",
@@ -1639,144 +1676,1171 @@
           }
         }
       }
+    },
+    "/shoppint-list": {
+      "post": {
+        "tags": ["shopping-list"],
+        "summary": "Add ingredient to shopping list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "requestBody": {
+          "description": "Recipe's details object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["ingredientId", "value"],
+                "properties": {
+                  "ingredientId": {
+                    "type": "string",
+                    "description": "Ingredient's id (ObjectId)",
+                    "emample": "507f1f77bcf86cd799439011"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The numbers og ingredients",
+                    "example": "500g"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Recipe created successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "shoppingItem": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "description": "Shopping item id (ObjectId)",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "The numbers og ingredients",
+                              "example": "500g"
+                            },
+                            "ingredient": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "description": "Ingredient's id (ObjectId)",
+                                  "example": "507f1f77bcf86cd799439011"
+                                },
+                                "ttl": {
+                                  "type": "string",
+                                  "description": "Ingredient's title",
+                                  "example": "Chicken Breasts"
+                                },
+                                "thb": {
+                                  "type": "string",
+                                  "description": "Ingredient's image",
+                                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/twwmhdfwwkddutyhjd28.png"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["shopping-list"],
+        "summary": "Get own recipes list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "The number of page"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "description": "The numbers of items to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "shoppingList": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "description": "Shopping item id (ObjectId)",
+                                "example": "507f1f77bcf86cd799439011"
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "The numbers og ingredients",
+                                "example": "500g"
+                              },
+                              "ingredient": {
+                                "type": "object",
+                                "properties": {
+                                  "_id": {
+                                    "type": "string",
+                                    "description": "Ingredient's id (ObjectId)",
+                                    "example": "507f1f77bcf86cd799439011"
+                                  },
+                                  "ttl": {
+                                    "type": "string",
+                                    "description": "Ingredient's title",
+                                    "example": "Chicken Breasts"
+                                  },
+                                  "thb": {
+                                    "type": "string",
+                                    "description": "Ingredient's image",
+                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/twwmhdfwwkddutyhjd28.png"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "description": "Total recipe's amount",
+                          "example": 100
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "Current page",
+                          "example": 1
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Recipe's amount per page",
+                          "example": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request query)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/shopping-list/:{id}": {
+      "delete": {
+        "tags": ["shopping-list"],
+        "summary": "Delete recipe",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Recipe's id (ObjectId)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "shoppingItem": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "description": "Shopping item id (ObjectId)",
+                              "example": "507f1f77bcf86cd799439011"
+                            },
+                            "value": {
+                              "type": "string",
+                              "description": "The numbers og ingredients",
+                              "example": "500g"
+                            },
+                            "ingredient": {
+                              "type": "object",
+                              "properties": {
+                                "_id": {
+                                  "type": "string",
+                                  "description": "Ingredient's id (ObjectId)",
+                                  "example": "507f1f77bcf86cd799439011"
+                                },
+                                "ttl": {
+                                  "type": "string",
+                                  "description": "Ingredient's title",
+                                  "example": "Chicken Breasts"
+                                },
+                                "thb": {
+                                  "type": "string",
+                                  "description": "Ingredient's image",
+                                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/twwmhdfwwkddutyhjd28.png"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request path)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Get recipes list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "The number of page"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "description": "The numbers of items to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "recipes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "description": "Rcipe's id (ObjectId)",
+                                "example": "507f1f77bcf86cd799439011"
+                              },
+                              "title": {
+                                "type": "string",
+                                "description": "Recipe's title",
+                                "example": "Chicken Alfredo Primavera"
+                              },
+                              "category": {
+                                "type": "string",
+                                "enum": [
+                                  "Beef",
+                                  "Breakfast",
+                                  "Chicken",
+                                  "Dessert",
+                                  "Goat",
+                                  "Lamb",
+                                  "Miscellaneous",
+                                  "Pasta",
+                                  "Pork",
+                                  "Seafood",
+                                  "Side",
+                                  "Starter",
+                                  "Vegan",
+                                  "Vegeterian"
+                                ],
+                                "example": "Chicken"
+                              },
+                              "description": {
+                                "type": "string",
+                                "description": "Recipe's description",
+                                "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                              },
+                              "thumb": {
+                                "type": "string",
+                                "description": "Recipe's image",
+                                "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                              },
+                              "preview": {
+                                "type": "string",
+                                "description": "Recipe's preview image",
+                                "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                              }
+                            }
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "description": "Total recipe's amount",
+                          "example": 100
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "Current page",
+                          "example": 1
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Recipe's amount per page",
+                          "example": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request query)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipes/:recipeId": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Get recipe by id",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The recipe id (ObjectId)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "recipe": {
+                          "type": "object",
+                          "properties": {
+                            "_id": {
+                              "type": "string",
+                              "description": "Recipe's id (ObjectId)",
+                              "example": "640cd5ac2d9fecf12e8897ee"
+                            },
+                            "title": {
+                              "type": "string",
+                              "description": "Recipe's title",
+                              "example": "Bakewell tart"
+                            },
+                            "category": {
+                              "type": "string",
+                              "enum": [
+                                "Beef",
+                                "Breakfast",
+                                "Chicken",
+                                "Dessert",
+                                "Goat",
+                                "Lamb",
+                                "Miscellaneous",
+                                "Pasta",
+                                "Pork",
+                                "Seafood",
+                                "Side",
+                                "Starter",
+                                "Vegan",
+                                "Vegeterian"
+                              ],
+                              "description": "Recipe's category",
+                              "example": "Dessert"
+                            },
+                            "area": {
+                              "type": "string",
+                              "example": "British"
+                            },
+                            "instructions": {
+                              "type": "string",
+                              "description": "Recipe's instruction",
+                              "example": "To make the pastry, measure the flour into a bowl and rub in the butter with your fingertips until ..."
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "Recipe's description",
+                              "exaple": "A British dessert consisting of a shortcrust pastry shell filled with raspberry jam, frangipane, and topped with almonds."
+                            },
+                            "thumb": {
+                              "type": "string",
+                              "example": "https://www.themealdb.com/images/media/meals/wyrqqq1468233628.jpg"
+                            },
+                            "review": {
+                              "type": "string",
+                              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560408/lygbfa7j94dgegmvnpas.jpg"
+                            },
+                            "time": {
+                              "type": "string",
+                              "description": "Recipe's cooking time",
+                              "example": 85
+                            },
+                            "favorites": {
+                              "type": "array",
+                              "description": "List of users who added the recipe to favorites",
+                              "items": {
+                                "type": "string",
+                                "description": "User's id (ObjectId)",
+                                "example": "640e10b12752a54004e7b2bc, 640e10b12752a54004e7b2bc"
+                              }
+                            },
+                            "ingredients": {
+                              "type": "array",
+                              "description": "Ingredients list",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "_id": {
+                                    "type": "string",
+                                    "description": "User id (ObjectId)",
+                                    "example": "640cd5ac2d9fecf12e889837"
+                                  },
+                                  "ttl": {
+                                    "type": "string",
+                                    "description": "The name of the ingredient",
+                                    "example": "Salmon"
+                                  },
+                                  "desc": {
+                                    "type": "string",
+                                    "description": "Detailed description of the ingredient",
+                                    "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae..."
+                                  },
+                                  "t": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                  },
+                                  "thb": {
+                                    "type": "string",
+                                    "description": "Small image of the ingredient",
+                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
+                                  },
+                                  "measure": {
+                                    "type": "string",
+                                    "description": "The numbers of ingredient",
+                                    "example": "400g"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request query)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipes/categories": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Get recipes list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "categories": {
+                          "type": "array",
+                          "description": "Recipes categories",
+                          "items": {
+                            "type": "string",
+                            "description": "Category name"
+                          },
+                          "example": [
+                            "Beef",
+                            "Breakfast",
+                            "Chicken",
+                            "Dessert",
+                            "Goat",
+                            "Lamb",
+                            "Miscellaneous",
+                            "Pasta",
+                            "Pork",
+                            "Seafood",
+                            "Side",
+                            "Starter",
+                            "Vegan",
+                            "Vegeterian"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipes/categories/:categoryName": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Get recipes list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "categoryName",
+            "required": true,
+            "enum": [
+              "Beef",
+              "Breakfast",
+              "Chicken",
+              "Dessert",
+              "Goat",
+              "Lamb",
+              "Miscellaneous",
+              "Pasta",
+              "Pork",
+              "Seafood",
+              "Side",
+              "Starter",
+              "Vegan",
+              "Vegeterian"
+            ],
+            "schema": {
+              "type": "string"
+            },
+            "description": "Category's name"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "The number of page"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            },
+            "description": "The numbers of items to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "recipes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string",
+                                "description": "Rcipe's id (ObjectId)",
+                                "example": "507f1f77bcf86cd799439011"
+                              },
+                              "title": {
+                                "type": "string",
+                                "description": "Recipe's title",
+                                "example": "Chicken Alfredo Primavera"
+                              },
+                              "category": {
+                                "type": "string",
+                                "enum": [
+                                  "Beef",
+                                  "Breakfast",
+                                  "Chicken",
+                                  "Dessert",
+                                  "Goat",
+                                  "Lamb",
+                                  "Miscellaneous",
+                                  "Pasta",
+                                  "Pork",
+                                  "Seafood",
+                                  "Side",
+                                  "Starter",
+                                  "Vegan",
+                                  "Vegeterian"
+                                ],
+                                "example": "Chicken"
+                              },
+                              "description": {
+                                "type": "string",
+                                "description": "Recipe's description",
+                                "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                              },
+                              "thumb": {
+                                "type": "string",
+                                "description": "Recipe's image",
+                                "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                              },
+                              "preview": {
+                                "type": "string",
+                                "description": "Recipe's preview image",
+                                "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                              }
+                            }
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "description": "Total recipe's amount",
+                          "example": 100
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "Current page",
+                          "example": 1
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Recipe's amount per page",
+                          "example": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request query)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/recipes/main-page": {
+      "get": {
+        "tags": ["recipes"],
+        "summary": "Get last 4 recipes by 4 categories",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Response status text",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "description": "Response status code",
+                      "example": 200
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "categories": {
+                          "type": "object",
+                          "properties": {
+                            "breackfast": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "_id": {
+                                    "type": "string",
+                                    "description": "Rcipe's id (ObjectId)",
+                                    "example": "507f1f77bcf86cd799439011"
+                                  },
+                                  "title": {
+                                    "type": "string",
+                                    "description": "Recipe's title",
+                                    "example": "Chicken Alfredo Primavera"
+                                  },
+                                  "category": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Beef",
+                                      "Breakfast",
+                                      "Chicken",
+                                      "Dessert",
+                                      "Goat",
+                                      "Lamb",
+                                      "Miscellaneous",
+                                      "Pasta",
+                                      "Pork",
+                                      "Seafood",
+                                      "Side",
+                                      "Starter",
+                                      "Vegan",
+                                      "Vegeterian"
+                                    ],
+                                    "example": "Breakfast"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "description": "Recipe's description",
+                                    "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                                  },
+                                  "thumb": {
+                                    "type": "string",
+                                    "description": "Recipe's image",
+                                    "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                                  },
+                                  "preview": {
+                                    "type": "string",
+                                    "description": "Recipe's preview image",
+                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                                  }
+                                }
+                              }
+                            },
+                            "miscellaneous": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "_id": {
+                                    "type": "string",
+                                    "description": "Rcipe's id (ObjectId)",
+                                    "example": "507f1f77bcf86cd799439011"
+                                  },
+                                  "title": {
+                                    "type": "string",
+                                    "description": "Recipe's title",
+                                    "example": "Chicken Alfredo Primavera"
+                                  },
+                                  "category": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Beef",
+                                      "Breakfast",
+                                      "Chicken",
+                                      "Dessert",
+                                      "Goat",
+                                      "Lamb",
+                                      "Miscellaneous",
+                                      "Pasta",
+                                      "Pork",
+                                      "Seafood",
+                                      "Side",
+                                      "Starter",
+                                      "Vegan",
+                                      "Vegeterian"
+                                    ],
+                                    "example": "Miscellaneous"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "description": "Recipe's description",
+                                    "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                                  },
+                                  "thumb": {
+                                    "type": "string",
+                                    "description": "Recipe's image",
+                                    "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                                  },
+                                  "preview": {
+                                    "type": "string",
+                                    "description": "Recipe's preview image",
+                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                                  }
+                                }
+                              }
+                            },
+                            "chicken": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "_id": {
+                                    "type": "string",
+                                    "description": "Rcipe's id (ObjectId)",
+                                    "example": "507f1f77bcf86cd799439011"
+                                  },
+                                  "title": {
+                                    "type": "string",
+                                    "description": "Recipe's title",
+                                    "example": "Chicken Alfredo Primavera"
+                                  },
+                                  "category": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Beef",
+                                      "Breakfast",
+                                      "Chicken",
+                                      "Dessert",
+                                      "Goat",
+                                      "Lamb",
+                                      "Miscellaneous",
+                                      "Pasta",
+                                      "Pork",
+                                      "Seafood",
+                                      "Side",
+                                      "Starter",
+                                      "Vegan",
+                                      "Vegeterian"
+                                    ],
+                                    "example": "Chicken"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "description": "Recipe's description",
+                                    "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                                  },
+                                  "thumb": {
+                                    "type": "string",
+                                    "description": "Recipe's image",
+                                    "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                                  },
+                                  "preview": {
+                                    "type": "string",
+                                    "description": "Recipe's preview image",
+                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                                  }
+                                }
+                              }
+                            },
+                            "dessert": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "_id": {
+                                    "type": "string",
+                                    "description": "Rcipe's id (ObjectId)",
+                                    "example": "507f1f77bcf86cd799439011"
+                                  },
+                                  "title": {
+                                    "type": "string",
+                                    "description": "Recipe's title",
+                                    "example": "Chicken Alfredo Primavera"
+                                  },
+                                  "category": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Beef",
+                                      "Breakfast",
+                                      "Chicken",
+                                      "Dessert",
+                                      "Goat",
+                                      "Lamb",
+                                      "Miscellaneous",
+                                      "Pasta",
+                                      "Pork",
+                                      "Seafood",
+                                      "Side",
+                                      "Starter",
+                                      "Vegan",
+                                      "Vegeterian"
+                                    ],
+                                    "example": "Dessert"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "description": "Recipe's description",
+                                    "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                                  },
+                                  "thumb": {
+                                    "type": "string",
+                                    "description": "Recipe's image",
+                                    "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                                  },
+                                  "preview": {
+                                    "type": "string",
+                                    "description": "Recipe's preview image",
+                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request query)"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
-  "/recipes/": {
-            "get": {
-                "tags": [
-                    "recipes"
-                ],
-                "summary": "Get all recipes",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/allRecipesResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {}
-                    }
-                }
-            }
-        },
-        "/recipes/categories": {
-            "get": {
-                "tags": [
-                    "recipes"
-                ],
-                "summary": "Get category List",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CategoriesResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {}
-                    }
-                }
-            }
-        },
-        "/recipes/main-page": {
-            "get": {
-                "tags": [
-                    "Recipes"
-                ],
-                "summary": "Get main page",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Main-pageResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {}
-                    }
-                }
-            }
-        },
-        "/recipes/categories/{categoryName}": {
-            "get": {
-                "tags": [
-                    "recipes"
-                ],
-                "summary": "Get recipes by category",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "categoryName"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/recipesByCategoryResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {}
-                    }
-                }
-            }
-        },
-        "/recipes/{recipesId}": {
-            "get": {
-                "tags": [
-                    "recipes"
-                ],
-                "summary": "Get recipe by id",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipesId"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/recipesByIdResponse"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {}
-                    }
-                }
-            }
-        },
-"components": {
+  "components": {
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
@@ -1986,7 +3050,6 @@
             }
           }
         }
-        
       },
       "RefreshRequest": {
         "type": "object",
@@ -2044,6 +3107,22 @@
           },
           "category": {
             "type": "string",
+            "enum": [
+              "Beef",
+              "Breakfast",
+              "Chicken",
+              "Dessert",
+              "Goat",
+              "Lamb",
+              "Miscellaneous",
+              "Pasta",
+              "Pork",
+              "Seafood",
+              "Side",
+              "Starter",
+              "Vegan",
+              "Vegeterian"
+            ],
             "description": "Recipe's category"
           },
           "instructions": {
@@ -2101,6 +3180,22 @@
                   },
                   "category": {
                     "type": "string",
+                    "enum": [
+                      "Beef",
+                      "Breakfast",
+                      "Chicken",
+                      "Dessert",
+                      "Goat",
+                      "Lamb",
+                      "Miscellaneous",
+                      "Pasta",
+                      "Pork",
+                      "Seafood",
+                      "Side",
+                      "Starter",
+                      "Vegan",
+                      "Vegeterian"
+                    ],
                     "description": "Recipe's category"
                   },
                   "area": {
@@ -2311,15 +3406,18 @@
               },
               "total": {
                 "type": "integer",
-                "description": "Total recipe's amount"
+                "description": "Total recipe's amount",
+                "example": 100
               },
               "page": {
                 "type": "integer",
-                "description": "Current page"
+                "description": "Current page",
+                "example": 1
               },
               "limit": {
                 "type": "integer",
-                "description": "Recipe's amount per page"
+                "description": "Recipe's amount per page",
+                "example": 10
               }
             }
           }
@@ -2441,15 +3539,18 @@
             },
             "total": {
               "type": "integer",
-              "description": "Total recipe's amount"
+              "description": "Total recipe's amount",
+              "example": 100
             },
             "page": {
               "type": "integer",
-              "description": "Current page"
+              "description": "Current page",
+              "example": 1
             },
             "limit": {
               "type": "integer",
-              "description": "Recipe's amount per page"
+              "description": "Recipe's amount per page",
+              "example": 10
             }
           }
         }
@@ -2571,15 +3672,18 @@
               },
               "total": {
                 "type": "integer",
-                "description": "Total recipe's amount"
+                "description": "Total recipe's amount",
+                "example": 100
               },
               "page": {
                 "type": "integer",
-                "description": "Current page"
+                "description": "Current page",
+                "example": 1
               },
               "limit": {
                 "type": "integer",
-                "description": "Recipe's amount per page"
+                "description": "Recipe's amount per page",
+                "example": 10
               }
             }
           }
@@ -2667,7 +3771,7 @@
                     "desc": {
                       "type": "string",
                       "description": "Detailed description of the ingredient",
-                      "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae. Other fish in the same family include trout, char, grayling and whitefish. Salmon are native to tributaries of the North Atlantic (genus Salmo) and Pacific Ocean (genus Oncorhynchus). Many species of salmon have been introduced into non-native environments such as the Great Lakes of North America and Patagonia in South America. Salmon are intensively farmed in many parts of the world.\r\n\nTypically, salmon are anadromous: they hatch in fresh water, migrate to the ocean, then return to fresh water to reproduce. However, populations of several species are restricted to fresh water through their lives. Folklore has it that the fish return to the exact spot where they hatched to spawn. Tracking studies have shown this to be mostly true. A portion of a returning salmon run may stray and spawn in different freshwater systems; the percent of straying depends on the species of salmon. Homing behavior has been shown to depend on olfactory memory. Salmon date back to the Neogene."
+                      "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae..."
                     },
                     "t": {
                       "type": "string",
@@ -2816,186 +3920,795 @@
             }
           }
         }
-      }
-      
-    },
-    "allRecipesResponse" : {
-                "type": "object",
-                "items": {
-                    "type": "string"
-                }
-            },
-    "CategoriesResponse": {
-                "type": "array",
-                "items": {
-                    "type": "string",
-                    "example": "Beef,Breakfast,Chicken,Dessert,Goat,Lamb,Miscellaneous,Pasta,Pork,Seafood,Side,Starter,Vegan,Vegeterian"
-                }
-            },
-              "Main-pageResponse": {
+      },
+      "AddShoppintListIngredientRequest": {
+        "type": "object",
+        "required": ["ingredientId", "value"],
+        "properties": {
+          "ingredientId": {
+            "type": "string",
+            "description": "Ingredient's id (ObjectId)",
+            "emample": "507f1f77bcf86cd799439011"
+          },
+          "value": {
+            "type": "string",
+            "description": "The numbers og ingredients",
+            "example": "500g"
+          }
+        }
+      },
+      "AddShoppingListIngredientResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "shoppingItem": {
                 "type": "object",
                 "properties": {
-                    "Pork": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "_id": {
-                                    "type": "string"
-                                },
-                                "title": {
-                                    "type": "string"
-                                },
-                                "preview": {
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "_id",
-                                "title",
-                                "preview"
-                            ]
-                        },
-                        "example": [
-                            {
-                                "_id": "640cd5ac2d9fecf12e88981b",
-                                "title": "Toad In The Hole",
-                                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560538/o9wdabhravnkzdjs36ce.jpg"
-                            },
-                            {
-                                "_id": "640cd5ac2d9fecf12e889833",
-                                "title": "Pork Cassoulet",
-                                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560540/fj6wdhhnk52yxugwyts5.jpg"
-                            },
-                            {
-                                "_id": "640cd5ac2d9fecf12e889842",
-                                "title": "Vietnamese Grilled Pork (bun-thit-nuong)",
-                                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560621/ictxrdqxkpvu5eltd3ro.jpg"
-                            },
-                            {
-                                "_id": "640cd5ac2d9fecf12e889859",
-                                "title": "Bubble & Squeak",
-                                "preview": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560622/vjkwqtj7nssohxiqxtwl.jpg"
-                            }
-                        ]
+                  "_id": {
+                    "type": "string",
+                    "description": "Shopping item id (ObjectId)",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The numbers og ingredients",
+                    "example": "500g"
+                  },
+                  "ingredient": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Ingredient's id (ObjectId)",
+                        "example": "507f1f77bcf86cd799439011"
+                      },
+                      "ttl": {
+                        "type": "string",
+                        "description": "Ingredient's title",
+                        "example": "Chicken Breasts"
+                      },
+                      "thb": {
+                        "type": "string",
+                        "description": "Ingredient's image",
+                        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/twwmhdfwwkddutyhjd28.png"
+                      }
                     }
                   }
-                },
-                "recipesByIdResponse": {
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetShoppingListResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "shoppingList": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Shopping item id (ObjectId)",
+                      "example": "507f1f77bcf86cd799439011"
+                    },
+                    "value": {
+                      "type": "string",
+                      "description": "The numbers og ingredients",
+                      "example": "500g"
+                    },
+                    "ingredient": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "Ingredient's id (ObjectId)",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "ttl": {
+                          "type": "string",
+                          "description": "Ingredient's title",
+                          "example": "Chicken Breasts"
+                        },
+                        "thb": {
+                          "type": "string",
+                          "description": "Ingredient's image",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/twwmhdfwwkddutyhjd28.png"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total recipe's amount",
+                "example": 100
+              },
+              "page": {
+                "type": "integer",
+                "description": "Current page",
+                "example": 1
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Recipe's amount per page",
+                "example": 10
+              }
+            }
+          }
+        }
+      },
+      "DeleteShoppingItemResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "shoppingItem": {
                 "type": "object",
                 "properties": {
-                    "_id": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Shopping item id (ObjectId)",
+                    "example": "507f1f77bcf86cd799439011"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The numbers og ingredients",
+                    "example": "500g"
+                  },
+                  "ingredient": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
                         "type": "string",
-                        "description": "unique recipe's id"
+                        "description": "Ingredient's id (ObjectId)",
+                        "example": "507f1f77bcf86cd799439011"
+                      },
+                      "ttl": {
+                        "type": "string",
+                        "description": "Ingredient's title",
+                        "example": "Chicken Breasts"
+                      },
+                      "thb": {
+                        "type": "string",
+                        "description": "Ingredient's image",
+                        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/twwmhdfwwkddutyhjd28.png"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetRecipesListResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Rcipe's id (ObjectId)",
+                      "example": "507f1f77bcf86cd799439011"
                     },
                     "title": {
-                        "type": "string",
-                        "description": "recipe's name"
+                      "type": "string",
+                      "description": "Recipe's title",
+                      "example": "Chicken Alfredo Primavera"
                     },
                     "category": {
-                        "type": "string",
-                        "description": "recipe's category"
+                      "type": "string",
+                      "enum": [
+                        "Beef",
+                        "Breakfast",
+                        "Chicken",
+                        "Dessert",
+                        "Goat",
+                        "Lamb",
+                        "Miscellaneous",
+                        "Pasta",
+                        "Pork",
+                        "Seafood",
+                        "Side",
+                        "Starter",
+                        "Vegan",
+                        "Vegeterian"
+                      ],
+                      "example": "Chicken"
                     },
                     "description": {
-                        "type": "string",
-                        "description": "recipe's description"
+                      "type": "string",
+                      "description": "Recipe's description",
+                      "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
                     },
-                    "time": {
-                        "type": "string",
-                        "description": "time to coock"
+                    "thumb": {
+                      "type": "string",
+                      "description": "Recipe's image",
+                      "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
                     },
-                    "preparation": {
-                        "type": "string",
-                        "description": "Recipe preparation instructions"
-                    },
-                    "favorites": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "array of users , who aded recipe to favorites"
-                    },
-                    "likes": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "array of users , who like recipe"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "The date and time the recipe was created"
-                    },
-                    "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "The date and time the recipe was last changed"
-                    },
-                    "ingredients": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string",
-                                    "description": "unique  ingredient's id"
-                                },
-                                "measure": {
-                                    "type": "string",
-                                    "description": "The amount of ingredient needed to make the recipe"
-                                }
-                            }
-                        },
-                        "description": "An array of ingredients needed to prepare a recipe"
-                    },
-                    "owner": {
-                        "type": "string",
-                        "description": "The unique identifier of the user who added the recipe"
+                    "preview": {
+                      "type": "string",
+                      "description": "Recipe's preview image",
+                      "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
                     }
+                  }
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total recipe's amount",
+                "example": 100
+              },
+              "page": {
+                "type": "integer",
+                "description": "Current page",
+                "example": 1
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Recipe's amount per page",
+                "example": 10
+              }
+            }
+          }
+        }
+      },
+      "GetRecipeByIdResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipe": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Recipe's id (ObjectId)",
+                    "example": "640cd5ac2d9fecf12e8897ee"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Recipe's title",
+                    "example": "Bakewell tart"
+                  },
+                  "category": {
+                    "type": "string",
+                    "enum": [
+                      "Beef",
+                      "Breakfast",
+                      "Chicken",
+                      "Dessert",
+                      "Goat",
+                      "Lamb",
+                      "Miscellaneous",
+                      "Pasta",
+                      "Pork",
+                      "Seafood",
+                      "Side",
+                      "Starter",
+                      "Vegan",
+                      "Vegeterian"
+                    ],
+                    "description": "Recipe's category",
+                    "example": "Dessert"
+                  },
+                  "area": {
+                    "type": "string",
+                    "example": "British"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Recipe's instruction",
+                    "example": "To make the pastry, measure the flour into a bowl and rub in the butter with your fingertips until ..."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Recipe's description",
+                    "exaple": "A British dessert consisting of a shortcrust pastry shell filled with raspberry jam, frangipane, and topped with almonds."
+                  },
+                  "thumb": {
+                    "type": "string",
+                    "example": "https://www.themealdb.com/images/media/meals/wyrqqq1468233628.jpg"
+                  },
+                  "review": {
+                    "type": "string",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560408/lygbfa7j94dgegmvnpas.jpg"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Recipe's cooking time",
+                    "example": 85
+                  },
+                  "favorites": {
+                    "type": "array",
+                    "description": "List of users who added the recipe to favorites",
+                    "items": {
+                      "type": "string",
+                      "description": "User's id (ObjectId)",
+                      "example": "640e10b12752a54004e7b2bc, 640e10b12752a54004e7b2bc"
+                    }
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "description": "Ingredients list",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "User id (ObjectId)",
+                          "example": "640cd5ac2d9fecf12e889837"
+                        },
+                        "ttl": {
+                          "type": "string",
+                          "description": "The name of the ingredient",
+                          "example": "Salmon"
+                        },
+                        "desc": {
+                          "type": "string",
+                          "description": "Detailed description of the ingredient",
+                          "example": "Salmon is the common name for several species of ray-finned fish in the family Salmonidae..."
+                        },
+                        "t": {
+                          "type": "string",
+                          "description": "",
+                          "example": ""
+                        },
+                        "thb": {
+                          "type": "string",
+                          "description": "Small image of the ingredient",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
+                        },
+                        "measure": {
+                          "type": "string",
+                          "description": "The numbers of ingredient",
+                          "example": "400g"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetCategoriesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "array",
+                "description": "Recipes categories",
+                "items": {
+                  "type": "string",
+                  "description": "Category name"
                 },
                 "example": [
-                    {
-                        "_id": "6426cc69bbfa55460b0ea034",
-                        "title": "bestRecipe",
-                        "category": "Breakfast",
-                        "description": "Soak the beans overnight in plenty of water",
-                        "time": "40min",
-                        "preparation": "kill three people",
-                        "favorites": [],
-                        "likes": [],
-                        "createdAt": "2023-03-31T11:40:28.789Z",
-                        "updatedAt": null,
-                        "ingredients": [
-                            {
-                                "id": "64268a82f19f5ba4200d1ebf",
-                                "measure": "20 ml"
-                            },
-                            {
-                                "id": "6426c87bbbfa55460b0e9fe9",
-                                "measure": "30 ml"
-                            },
-                            {
-                                "id": "6426c87bbbfa55460b0e9fed",
-                                "measure": "40 ml"
-                            },
-                            {
-                                "id": "6426c87bbbfa55460b0e9ff1",
-                                "measure": "20 la"
-                            },
-                            {
-                                "id": "6426c6f5bbfa55460b0e9fde",
-                                "measure": "30 ml"
-                            },
-                            {
-                                "id": "64268a82f19f5ba4200d1ec2",
-                                "measure": "1 lb"
-                            }
-                        ],
-                        "owner": "642505e34fa20d6fe32fb381"
-                    }
+                  "Beef",
+                  "Breakfast",
+                  "Chicken",
+                  "Dessert",
+                  "Goat",
+                  "Lamb",
+                  "Miscellaneous",
+                  "Pasta",
+                  "Pork",
+                  "Seafood",
+                  "Side",
+                  "Starter",
+                  "Vegan",
+                  "Vegeterian"
                 ]
-            },
+              }
+            }
+          }
+        }
+      },
+      "GetRecipeByCategoryNameResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "recipes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "Rcipe's id (ObjectId)",
+                      "example": "507f1f77bcf86cd799439011"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Recipe's title",
+                      "example": "Chicken Alfredo Primavera"
+                    },
+                    "category": {
+                      "type": "string",
+                      "enum": [
+                        "Beef",
+                        "Breakfast",
+                        "Chicken",
+                        "Dessert",
+                        "Goat",
+                        "Lamb",
+                        "Miscellaneous",
+                        "Pasta",
+                        "Pork",
+                        "Seafood",
+                        "Side",
+                        "Starter",
+                        "Vegan",
+                        "Vegeterian"
+                      ],
+                      "example": "Chicken"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Recipe's description",
+                      "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                    },
+                    "thumb": {
+                      "type": "string",
+                      "description": "Recipe's image",
+                      "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                    },
+                    "preview": {
+                      "type": "string",
+                      "description": "Recipe's preview image",
+                      "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                    }
+                  }
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total recipe's amount",
+                "example": 100
+              },
+              "page": {
+                "type": "integer",
+                "description": "Current page",
+                "example": 1
+              },
+              "limit": {
+                "type": "integer",
+                "description": "Recipe's amount per page",
+                "example": 10
+              }
+            }
+          }
+        }
+      },
+      "GetMainPageResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Response status text",
+            "example": "success"
+          },
+          "code": {
+            "type": "integer",
+            "description": "Response status code",
+            "example": 200
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "categories": {
+                "type": "object",
+                "properties": {
+                  "breackfast": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "Rcipe's id (ObjectId)",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Recipe's title",
+                          "example": "Chicken Alfredo Primavera"
+                        },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "Beef",
+                            "Breakfast",
+                            "Chicken",
+                            "Dessert",
+                            "Goat",
+                            "Lamb",
+                            "Miscellaneous",
+                            "Pasta",
+                            "Pork",
+                            "Seafood",
+                            "Side",
+                            "Starter",
+                            "Vegan",
+                            "Vegeterian"
+                          ],
+                          "example": "Breakfast"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Recipe's description",
+                          "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                        },
+                        "thumb": {
+                          "type": "string",
+                          "description": "Recipe's image",
+                          "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                        },
+                        "preview": {
+                          "type": "string",
+                          "description": "Recipe's preview image",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                        }
+                      }
+                    }
+                  },
+                  "miscellaneous": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "Rcipe's id (ObjectId)",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Recipe's title",
+                          "example": "Chicken Alfredo Primavera"
+                        },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "Beef",
+                            "Breakfast",
+                            "Chicken",
+                            "Dessert",
+                            "Goat",
+                            "Lamb",
+                            "Miscellaneous",
+                            "Pasta",
+                            "Pork",
+                            "Seafood",
+                            "Side",
+                            "Starter",
+                            "Vegan",
+                            "Vegeterian"
+                          ],
+                          "example": "Miscellaneous"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Recipe's description",
+                          "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                        },
+                        "thumb": {
+                          "type": "string",
+                          "description": "Recipe's image",
+                          "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                        },
+                        "preview": {
+                          "type": "string",
+                          "description": "Recipe's preview image",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                        }
+                      }
+                    }
+                  },
+                  "chicken": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "Rcipe's id (ObjectId)",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Recipe's title",
+                          "example": "Chicken Alfredo Primavera"
+                        },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "Beef",
+                            "Breakfast",
+                            "Chicken",
+                            "Dessert",
+                            "Goat",
+                            "Lamb",
+                            "Miscellaneous",
+                            "Pasta",
+                            "Pork",
+                            "Seafood",
+                            "Side",
+                            "Starter",
+                            "Vegan",
+                            "Vegeterian"
+                          ],
+                          "example": "Chicken"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Recipe's description",
+                          "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                        },
+                        "thumb": {
+                          "type": "string",
+                          "description": "Recipe's image",
+                          "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                        },
+                        "preview": {
+                          "type": "string",
+                          "description": "Recipe's preview image",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                        }
+                      }
+                    }
+                  },
+                  "dessert": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "Rcipe's id (ObjectId)",
+                          "example": "507f1f77bcf86cd799439011"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Recipe's title",
+                          "example": "Chicken Alfredo Primavera"
+                        },
+                        "category": {
+                          "type": "string",
+                          "enum": [
+                            "Beef",
+                            "Breakfast",
+                            "Chicken",
+                            "Dessert",
+                            "Goat",
+                            "Lamb",
+                            "Miscellaneous",
+                            "Pasta",
+                            "Pork",
+                            "Seafood",
+                            "Side",
+                            "Starter",
+                            "Vegan",
+                            "Vegeterian"
+                          ],
+                          "example": "Dessert"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Recipe's description",
+                          "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
+                        },
+                        "thumb": {
+                          "type": "string",
+                          "description": "Recipe's image",
+                          "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
+                        },
+                        "preview": {
+                          "type": "string",
+                          "description": "Recipe's preview image",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "Bearer": {
         "type": "http",
