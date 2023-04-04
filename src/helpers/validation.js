@@ -35,6 +35,8 @@ const validationFields = {
   // Search, ingredients
   type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
+  // ShoppingList
+  ingredientId: Joi.string().custom(idValidation, 'Invalid id'),
   // Pages
   page: Joi.number().integer().min(1),
   limit: Joi.number().integer().min(1),
@@ -71,6 +73,7 @@ const validationRequestWithImg =
   };
 
 module.exports = {
+  idValidation,
   validationFields,
   isEmailValid,
   validationRequest,

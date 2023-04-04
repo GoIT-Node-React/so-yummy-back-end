@@ -1,4 +1,4 @@
-const { asyncWrapper } = require('../helpers/apiHelpers');
+const { asyncWrapper, responseData } = require('../helpers/apiHelpers');
 const { achievements: service } = require('../services');
 
 const getAchievements = async (req, res) => {

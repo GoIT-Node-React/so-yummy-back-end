@@ -6,4 +6,5 @@ module.exports = {
   search: require('./search'),
   ingredients: require('./ingredients'),
   users: require('./users'),
+  shoppingListRouter: require('./shoppingList'),
 };
