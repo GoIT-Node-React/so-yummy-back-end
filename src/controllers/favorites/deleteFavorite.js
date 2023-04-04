@@ -1,17 +1,20 @@
-const { asyncWrapper } = require("../../helpers/apiHelpers");
-const { NotFoundError } = require("../../helpers/errors");
-const UserModel = require("../../models/user");
+const { favorites: service } = require('../../services');
+const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
+const { NotFoundError } = require('../../helpers/errors');
 
 const deleteFavorite = async (req, res) => {
-  const { _id } = req.user;
-  const { recipeId } = req.body;
+  const { id } = req.user;
+  const { recipeId } = req.params;
 
-  const result = await UserModel.findOneAndDelete(recipeId, _id);
+  const favoriteRecipe = await service.findFavoriteRecipeByUserId(recipeId, id);
 
-  if (!result) {
-    throw new NotFoundError("Recipe with this id not found");
+  if (!favoriteRecipe) {
+    throw new NotFoundError(`Favorite recipe with id "${recipeId}" not found`);
   }
-  res.json({ message: "Recipe deleted from Favorites" });
+
+  const recipe = await service.deleteRecipeFromFavorites(recipeId, id);
+
+  res.json(responseData({ recipe }, 200));
 };
 
 module.exports = asyncWrapper(deleteFavorite);

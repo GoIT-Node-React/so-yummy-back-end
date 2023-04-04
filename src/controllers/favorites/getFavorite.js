@@ -1,19 +1,11 @@
-const { Recipe } = require('../../models/recipe');
-const { asyncWrapper } = require('../../helpers/apiHelpers');
+const { favorites: service } = require('../../services');
+const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
 
 const getFavorite = async (req, res) => {
-  const ObjectId = req.user._id;
+  const { id } = req.user;
 
-  const result = await Recipe.aggregate([
-    {
-      $match: {
-        favorites: {
-          $in: [new ObjectId('<user_id>')],
-        },
-      },
-    },
-  ]);
+  const recipes = await service.getFavoritesRecipes(id);
 
-  res.json({ result });
+  res.status(200).json(responseData({ recipes }, 200));
 };
 module.exports = asyncWrapper(getFavorite);
