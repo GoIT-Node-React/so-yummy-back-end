@@ -30,26 +30,3 @@ module.exports = asyncWrapper(getRecipesByCategory);
 
 
 
-// const gettRecipesByCategory = async (req, res) => {
-//   const PAGE_SIZE = 10;
-//   const page = req.query.page ? parseInt(req.query.page) : 1;
-//   const skip = (page - 1) * PAGE_SIZE;
-  
-//     const [recipes, count] = await Promise.all([
-//       Recipe.find({})
-//         .sort({ created_date: -1 })
-//         .skip(skip)
-//         .limit(PAGE_SIZE),
-//       Recipe.countDocuments()
-//     ]);
-
-//     const totalPages = Math.ceil(count / PAGE_SIZE);
-    
-//     res.render("recipes", {
-//       recipes,
-//       totalPages,
-//       currentPage: page,
-//       pages: Array.from({ length: totalPages }, (_, i) => i + 1),
-//     });
-// };
-
