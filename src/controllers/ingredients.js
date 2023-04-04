@@ -1,5 +1,5 @@
-const { ingredients: service } = require('../services');
-const { asyncWrapper, responseData } = require('../helpers/apiHelpers');
+const { ingredients: service } = require("../services");
+const { asyncWrapper, responseData } = require("../helpers/apiHelpers");
 
 const getRecipeByIngredientController = async (req, res) => {
   const { value } = req.query;
