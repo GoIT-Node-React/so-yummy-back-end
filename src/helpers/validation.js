@@ -1,13 +1,14 @@
 const { isValidObjectId } = require('mongoose');
 const Joi = require('joi');
-const { RequestFieldType } = require('../types');
+const { RequestFieldType, SearchType } = require('../types');
 const { ValidationError } = require('./errors');
 const cloudinary = require('cloudinary');
+const { CATEGORIES } = require('./variables');
 
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
   if (!isValidObjectId(value)) {
-    return helpers.error('ObjectId.invalid');
+    return helpers.message('"id" should be of type "ObjectId"');
   }
 
   // Return the value unchanged
@@ -22,7 +23,7 @@ const validationFields = {
   password: Joi.string().min(3).max(30),
   refreshToken: Joi.string(),
   title: Joi.string().min(3).max(30),
-  category: Joi.string().min(3).max(40),
+  category: Joi.string().equal(...Object.values(CATEGORIES)),
   instructions: Joi.string().min(10),
   description: Joi.string().min(8),
   time: Joi.string().min(1),
@@ -33,11 +34,13 @@ const validationFields = {
     })
   ),
   // Search, ingredients
-  type: Joi.string(),
+  type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
-  //
-  page: Joi.number().min(1),
-  limit: Joi.number().min(1),
+  // ShoppingList
+  ingredientId: Joi.string().custom(idValidation, 'Invalid id'),
+  // Pages
+  page: Joi.number().integer().min(1),
+  limit: Joi.number().integer().min(1),
 };
 
 // Email validation for mongoose schema
@@ -71,6 +74,7 @@ const validationRequestWithImg =
   };
 
 module.exports = {
+  idValidation,
   validationFields,
   isEmailValid,
   validationRequest,

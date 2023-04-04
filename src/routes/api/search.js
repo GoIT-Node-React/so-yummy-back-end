@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { search: middleware } = require('../../middlewares');
+const { auth: authMiddleware, search: middleware } = require('../../middlewares');
 const { search: controller } = require('../../controllers');
 
-router.get('/', middleware.searchRecipe, controller.getRecipeByTitle);
+router.get('/', authMiddleware.auth, middleware.searchRecipe, controller.getRecipeByTitleOrIngredient);
 
 module.exports = router;

@@ -6,4 +6,6 @@ module.exports = {
   achievements: require('./achievements'),
   search: require('./search'),
   ingredients: require('./ingredients'),
+  shoppingList: require('./shoppingList'),
+  recipes: require('./recipes'),
 };

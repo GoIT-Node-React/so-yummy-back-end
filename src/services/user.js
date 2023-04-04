@@ -28,9 +28,30 @@ const getUserByRefreshToken = async (refreshToken) => {
   return user;
 };
 
+// updateUserProfileData
+const updateUserProfile = async (id, data) => {
+  const user = await User.findByIdAndUpdate(id, data, {
+    new: true,
+    runValidators: true,
+  });
+
+  return user;
+};
+
+const checkSubscriptionStatus = async (id, email) => {
+  const [currentUserProfile, userSubscribedByEmail] = await Promise.all([
+    User.findById(id),
+    User.findOne({ subscription: email }),
+  ]);
+
+  return { currentUserProfile, userSubscribedByEmail };
+};
+
 module.exports = {
   getUserByEmail,
   getUserByRefreshToken,
   getUserByVerificationToken,
   getUserById,
+  updateUserProfile,
+  checkSubscriptionStatus,
 };

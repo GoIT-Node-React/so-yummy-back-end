@@ -1,6 +1,6 @@
-const cloudinary = require("cloudinary");
+const cloudinary = require('cloudinary');
 
-const { Recipe } = require("../models");
+const { Recipe } = require('../models');
 
 const create = async (data) => {
   const recipe = await Recipe.create(data);
@@ -11,10 +11,11 @@ const deleteById = async (id, owner) => {
   const recipe = Recipe.findById(id);
 
   if (recipe.cloudinaryImageName) {
-    await cloudinary.v2.uploader.destroy(recipe.cloudinaryImageName, "image");
+    await cloudinary.v2.uploader.destroy(recipe.cloudinaryImageName, 'image');
   }
 
   const result = await Recipe.findOneAndRemove({ _id: id, owner });
+
   return result;
 };
 
@@ -26,13 +27,13 @@ const get = async (owner, page, limit) => {
     {
       $facet: {
         recipes: [{ $skip: page * limit - limit }, { $limit: limit }],
-        count: [{ $count: "total" }],
+        count: [{ $count: 'total' }],
       },
     },
     {
       $project: {
         recipes: 1,
-        total: { $arrayElemAt: ["$count.total", 0] },
+        total: { $arrayElemAt: ['$count.total', 0] },
         page: { $literal: page },
         limit: { $literal: limit },
       },
