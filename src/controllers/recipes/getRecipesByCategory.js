@@ -1,31 +1,22 @@
-const Recipe = require('../../models/recipe');
-const { asyncWrapper,responseData } = require('../../helpers/apiHelpers');
-const {NotFoundError} = require('../../helpers/errors')
+const { recipes: service } = require('../../services');
+const { asyncWrapper, responseData } = require('../../helpers/apiHelpers');
+const { DEFAULT_LIMIT_PER_PAGE, DEFAULT_PAGE, MAX_LIMIT_PER_PAGE } = require('../../helpers/variables');
 
 const getRecipesByCategory = async (req, res) => {
-  const { category } = req.params;
-  const { page = 1, limit = 8 } = req.query;
-  const skip = (page - 1) * limit;
+  const { categoryName } = req.params;
+  const { limit = DEFAULT_LIMIT_PER_PAGE, page = DEFAULT_PAGE } = req.query;
+  const pageLimit = parseInt(limit) > MAX_LIMIT_PER_PAGE ? MAX_LIMIT_PER_PAGE : parseInt(limit);
 
-  const categoryRecipes = await Recipe.find({ category }, " ", {
-    skip,
-    limit: Number(limit),
-  });
-  if (!categoryRecipes) {
-    throw NotFoundError(404, "Not found");
-  }
+  const recipes = await service.getRecipesByCategoryName(categoryName, pageLimit, parseInt(page));
 
   res.status(200).json(
     responseData(
-    {
-      categoryRecipes
-    },
-    200)
+      {
+        recipes,
+      },
+      200
+    )
   );
 };
 
-
 module.exports = asyncWrapper(getRecipesByCategory);
-
-
-

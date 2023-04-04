@@ -17,7 +17,7 @@ const recipeIdSchema = Joi.object({
 });
 
 const recipeCategoryNameSchema = Joi.object({
-  category: validationFields.category.required(),
+  categoryName: validationFields.category.required(),
 });
 
 module.exports = {
