@@ -8,4 +8,5 @@ module.exports = {
   ingredients: require('./ingredients'),
   shoppingList: require('./shoppingList'),
   recipes: require('./recipes'),
+  favorites: require('./favorites'),
 };

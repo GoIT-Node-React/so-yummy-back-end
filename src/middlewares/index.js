@@ -9,4 +9,5 @@ module.exports = {
   user: require('./user'),
   uploadImage: require('./uploadImage'),
   shoppingList: require('./shoppingList'),
+  favorites: require('./favorites'),
 };

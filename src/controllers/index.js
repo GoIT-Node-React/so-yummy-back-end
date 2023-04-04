@@ -7,4 +7,5 @@ module.exports = {
   ingredients: require('./ingredients'),
   user: require('./user'),
   shoppingList: require('./shoppingList'),
+  favorites: require('./favorites'),
 };

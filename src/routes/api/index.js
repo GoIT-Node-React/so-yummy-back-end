@@ -8,4 +8,5 @@ module.exports = {
   users: require('./users'),
   shoppingListRouter: require('./shoppingList'),
   recipes: require('./recipes'),
+  favorites: require('./favorites'),
 };
