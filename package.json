@@ -9,6 +9,9 @@
     "lint": "eslint ./src/**/*.js",
     "lint:fix": "eslint --fix **/*.js"
   },
+  "engines": {
+    "node": ">=14 <15"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GoIT-Node-React/so-yummy-back-end.git"
