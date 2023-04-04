@@ -16,7 +16,12 @@ const getRecipesByCategory = async (req, res) => {
     throw NotFoundError(404, "Not found");
   }
 
-  res.json(responseData({categoryRecipes}));
+  res.status(200).json(responseData(
+    {
+      categoryRecipes
+    },
+    200)
+  );
 };
 
 
