@@ -1,29 +1,23 @@
 const Recipe = require('../../models/recipe');
-const { asyncWrapper, } = require('../../helpers/apiHelpers');
-
+const { asyncWrapper,responseData } = require('../../helpers/apiHelpers');
+const {NotFoundError} = require('../../helpers/errors')
 
 const getRecipesByCategory = async (req, res) => {
-  const PAGE_SIZE = 10;
-  const page = req.query.page ? parseInt(req.query.page) : 1;
-  const skip = (page - 1) * PAGE_SIZE;
-  
-  Recipe.find({})
-    .sort({ created_date: -1 })
-    .skip(skip)
-    .limit(PAGE_SIZE)
-    .exec((err, recipes) => {
-      Recipe.countDocuments().exec(( count) => {        
-          const totalPages = Math.ceil(count / PAGE_SIZE);
-          res.render("recipes", {
-            recipes,
-            totalPages,
-            currentPage: page,
-            pages: Array.from({ length: totalPages }, (_, i) => i + 1),
-          })      
-            
-      });  
-    })
-  };
+  const { category } = req.params;
+  console.log(category);
+  const { page = 1, limit = 8 } = req.query;
+  const skip = (page - 1) * limit;
+
+  const categoryRecipes = await Recipe.find({ category }, " ", {
+    skip,
+    limit: Number(limit),
+  });
+  if (!categoryRecipes) {
+    throw NotFoundError(404, "Not found");
+  }
+
+  res.json(responseData({categoryRecipes}));
+};
 
 
 module.exports = asyncWrapper(getRecipesByCategory);
