@@ -1,11 +1,69 @@
 const { ShoppingList } = require('../models');
 
-const getByUserId = async (id) => {
-  const shoppingList = await ShoppingList.find({ owner: id })
-    .populate('ingredient', 'thb ttl')
-    .select({ _id: 1, value: 1, ingredient: 1 });
+const getByUserId = async (id, limit, page) => {
+  const shoppingList = await ShoppingList.aggregate([
+    {
+      $match: {
+        owner: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'ingredients',
+        localField: 'ingredient',
+        foreignField: '_id',
+        as: 'ingredient',
+      },
+    },
+    {
+      $set: {
+        ingredient: {
+          $arrayElemAt: ['$ingredient', 0],
+        },
+      },
+    },
+    {
+      $facet: {
+        shoppingList: [
+          {
+            $skip: (page - 1) * limit,
+          },
+          {
+            $limit: limit,
+          },
+        ],
+        count: [
+          {
+            $count: 'total',
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        shoppingList: {
+          _id: 1,
+          value: 1,
+          ingredient: {
+            _id: 1,
+            ttl: 1,
+            thb: 1,
+          },
+        },
+        total: {
+          $arrayElemAt: ['$count.total', 0],
+        },
+        page: {
+          $literal: page,
+        },
+        limit: {
+          $literal: limit,
+        },
+      },
+    },
+  ]);
 
-  return shoppingList;
+  return shoppingList[0];
 };
 
 const add = async (data) => {
