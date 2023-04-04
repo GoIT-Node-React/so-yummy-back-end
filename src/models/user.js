@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+
 const { isEmailValid } = require('../helpers/validation');
 
 const schema = new mongoose.Schema(
@@ -26,7 +27,7 @@ const schema = new mongoose.Schema(
     },
     subscription: {
       type: String,
-      default: null,
+      default: '',
     },
     refreshToken: {
       type: String,

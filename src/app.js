@@ -24,6 +24,8 @@ app.use('/api/popular-recipes', routes.popularRecipes);
 app.use('/api/achievements', routes.achievements);
 app.use('/api/search', routes.search);
 app.use('/api/ingredients', routes.ingredients);
+app.use('/api/users', routes.users);
+app.use('/api/shopping-list', routes.shoppingListRouter);
 app.use('/api/recipes', routes.recipes);
 //==========================
 
