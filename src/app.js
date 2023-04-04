@@ -26,6 +26,7 @@ app.use('/api/search', routes.search);
 app.use('/api/ingredients', routes.ingredients);
 app.use('/api/users', routes.users);
 app.use('/api/shopping-list', routes.shoppingListRouter);
+app.use('/api/recipes', routes.recipes);
 //==========================
 
 app.use((_, res) => {
