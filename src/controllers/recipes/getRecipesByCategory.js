@@ -9,14 +9,7 @@ const getRecipesByCategory = async (req, res) => {
 
   const recipes = await service.getRecipesByCategoryName(categoryName, pageLimit, parseInt(page));
 
-  res.status(200).json(
-    responseData(
-      {
-        recipes,
-      },
-      200
-    )
-  );
+  res.status(200).json(responseData(recipes, 200));
 };
 
 module.exports = asyncWrapper(getRecipesByCategory);

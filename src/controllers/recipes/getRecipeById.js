@@ -11,7 +11,7 @@ const getRecipeById = async (req, res) => {
     throw new NotFoundError(`Recipe with id "${recipeId}" not found`);
   }
 
-  return res.status(200).json(responseData(recipe, 200));
+  return res.status(200).json(responseData({ recipe }, 200));
 };
 
 module.exports = asyncWrapper(getRecipeById);
