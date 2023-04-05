@@ -50,6 +50,7 @@ const updateTokensById = async (id) => {
   const payload = {
     id,
   };
+
   const refreshToken = jwt.sign(payload, JWT_REFRESH_SECRET, { expiresIn: '7d' });
   const accessToken = jwt.sign(payload, JWT_ACCESS_SECRET, { expiresIn: '15m' });
 
