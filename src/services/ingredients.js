@@ -4,7 +4,7 @@ const getIngredients = async (value) => {
   const searchQuery = {};
 
   if (value) {
-    searchQuery.ttl = { $regex: new RegExp(value, 'i') };
+    searchQuery.ttl = { $regex: new RegExp(`^${value}`, 'i') };
   }
 
   return await Ingredient.find(searchQuery);
