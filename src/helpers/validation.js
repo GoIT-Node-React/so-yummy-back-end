@@ -1,9 +1,9 @@
-const { isValidObjectId } = require('mongoose');
-const Joi = require('joi');
-const { RequestFieldType, SearchType } = require('../types');
-const { ValidationError } = require('./errors');
-const cloudinary = require('cloudinary');
-const { CATEGORIES } = require('./variables');
+const { isValidObjectId } = require("mongoose");
+const Joi = require("joi");
+const { RequestFieldType, SearchType } = require("../types");
+const { ValidationError } = require("./errors");
+const cloudinary = require("cloudinary");
+const { CATEGORIES } = require("./variables");
 
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
@@ -17,7 +17,7 @@ const idValidation = (value, helpers) => {
 
 // Validation rules
 const validationFields = {
-  id: Joi.string().custom(idValidation, 'Invalid id'),
+  id: Joi.string().custom(idValidation, "Invalid id"),
   name: Joi.string().min(1).max(30),
   email: Joi.string().email(),
   password: Joi.string().min(3).max(30),
@@ -27,17 +27,12 @@ const validationFields = {
   instructions: Joi.string().min(10),
   description: Joi.string().min(8),
   time: Joi.string().min(1),
-  ingredients: Joi.array().items(
-    Joi.object({
-      id: Joi.string().custom(idValidation, 'Invalid id').required(),
-      measure: Joi.string().min(1).required(),
-    })
-  ),
+  ingredients: Joi.string(),
   // Search, ingredients
   type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
   // ShoppingList
-  ingredientId: Joi.string().custom(idValidation, 'Invalid id'),
+  ingredientId: Joi.string().custom(idValidation, "Invalid id"),
   // Pages
   page: Joi.number().integer().min(1),
   limit: Joi.number().integer().min(1),
@@ -66,7 +61,7 @@ const validationRequestWithImg =
     const validationResult = schema.validate(req[type]);
 
     if (validationResult.error) {
-      cloudinary.v2.uploader.destroy(req.file.filename, 'image');
+      cloudinary.v2.uploader.destroy(req.file.filename, "image");
       throw new ValidationError(validationResult.error.message);
     }
 
