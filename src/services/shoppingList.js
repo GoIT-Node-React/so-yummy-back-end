@@ -49,6 +49,7 @@ const getByUserId = async (id, limit, page) => {
             ttl: 1,
             thb: 1,
           },
+          recipeId: 1,
         },
         total: {
           $arrayElemAt: ['$count.total', 0],
