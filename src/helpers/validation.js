@@ -17,10 +17,12 @@ const idValidation = (value, helpers) => {
 
 // Validation rules
 const validationFields = {
+
   id: Joi.string().custom(idValidation, "Invalid id"),
   name: Joi.string().min(1).max(30),
+
   email: Joi.string().email(),
-  password: Joi.string().min(3).max(30),
+  password: Joi.string().min(6).max(16),
   refreshToken: Joi.string(),
   title: Joi.string().min(3).max(30),
   category: Joi.string().equal(...Object.values(CATEGORIES)),

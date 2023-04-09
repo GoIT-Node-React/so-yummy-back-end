@@ -30,6 +30,7 @@ const getRecipes = async (limit, page) => {
           description: 1,
           thumb: 1,
           preview: 1,
+          time: 1,
         },
         total: {
           $arrayElemAt: ['$count.total', 0],
