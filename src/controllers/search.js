@@ -5,9 +5,9 @@ const { MAX_LIMIT_PER_PAGE, DEFAULT_LIMIT_PER_PAGE, DEFAULT_PAGE } = require('..
 
 const getRecipeByTitleController = async (req, res) => {
   const { type, value, page = DEFAULT_PAGE, limit = DEFAULT_LIMIT_PER_PAGE } = req.query;
-  const searchMethod = type === SearchType.title ? service.getRecipeByTitleNew : service.getRecipeByIngredient;
+  const searchMethod = type === SearchType.title ? service.getRecipeByTitle : service.getRecipeByIngredient;
   const pageLimit = parseInt(limit) > MAX_LIMIT_PER_PAGE ? MAX_LIMIT_PER_PAGE : parseInt(limit);
-  const [result] = await searchMethod(value, page, pageLimit);
+  const [result] = await searchMethod(value, parseInt(page), pageLimit);
 
   res.status(200).json(
     responseData(

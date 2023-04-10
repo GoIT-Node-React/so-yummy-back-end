@@ -1,9 +1,9 @@
-const { isValidObjectId } = require("mongoose");
-const Joi = require("joi");
-const { RequestFieldType, SearchType } = require("../types");
-const { ValidationError } = require("./errors");
-const cloudinary = require("cloudinary");
-const { CATEGORIES } = require("./variables");
+const { isValidObjectId } = require('mongoose');
+const Joi = require('joi');
+const { RequestFieldType, SearchType } = require('../types');
+const { ValidationError } = require('./errors');
+const cloudinary = require('cloudinary');
+const { CATEGORIES } = require('./variables');
 
 const idValidation = (value, helpers) => {
   // Use error to return an existing error code
@@ -17,12 +17,18 @@ const idValidation = (value, helpers) => {
 
 // Validation rules
 const validationFields = {
-
-  id: Joi.string().custom(idValidation, "Invalid id"),
+  id: Joi.string().custom(idValidation, 'Invalid id'),
   name: Joi.string().min(1).max(30),
-
-  email: Joi.string().email(),
-  password: Joi.string().min(6).max(16),
+  email: Joi.string().email({ tlds: { allow: false } }),
+  password: Joi.string()
+    .min(6)
+    .max(16)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/)
+    .messages({
+      'string.min': 'Must have at least 6 characters',
+      'string.max': 'Must be less then or equal 16 characters',
+      'string.pattern.base': 'At least one uppercase letter, one lowercase letter and one number',
+    }),
   refreshToken: Joi.string(),
   title: Joi.string().min(3).max(30),
   category: Joi.string().equal(...Object.values(CATEGORIES)),
@@ -34,7 +40,7 @@ const validationFields = {
   type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
   // ShoppingList
-  ingredientId: Joi.string().custom(idValidation, "Invalid id"),
+  ingredientId: Joi.string().custom(idValidation, 'Invalid id'),
   // Pages
   page: Joi.number().integer().min(1),
   limit: Joi.number().integer().min(1),
@@ -63,7 +69,7 @@ const validationRequestWithImg =
     const validationResult = schema.validate(req[type]);
 
     if (validationResult.error) {
-      cloudinary.v2.uploader.destroy(req.file.filename, "image");
+      cloudinary.v2.uploader.destroy(req.file.filename, 'image');
       throw new ValidationError(validationResult.error.message);
     }
 

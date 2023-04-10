@@ -11,7 +11,7 @@ const { JWT_ACCESS_SECRET } = process.env;
 
 const loginSchema = Joi.object({
   email: validationFields.email.required(),
-  password: validationFields.password.required(),
+  password: Joi.string().min(1).required(),
 });
 
 const registerSchema = Joi.object({
