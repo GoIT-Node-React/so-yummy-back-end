@@ -1,13 +1,32 @@
 const { Recipe } = require('../models');
 
-const getFavoritesRecipes = async (userId) => {
-  const recipes = await Recipe.find({
-    favorites: {
-      $in: [userId],
+const getFavoritesRecipes = async (userId, page, limit) => {
+  const pipeline = [
+    {
+      $match: {
+        favorites: {
+          $in: [userId],
+        },
+      },
     },
-  }).select({ title: 1, category: 1, description: 1, thumb: 1, preview: 1, time: 1 });
+    {
+      $facet: {
+        recipes: [{ $skip: page * limit - limit }, { $limit: limit }],
+        count: [{ $count: 'total' }],
+      },
+    },
+    {
+      $project: {
+        recipes: 1,
+        total: { $arrayElemAt: ['$count.total', 0] },
+        page: { $literal: page },
+        limit: { $literal: limit },
+      },
+    },
+  ];
 
-  return recipes;
+  const results = await Recipe.aggregate(pipeline);
+  return results[0];
 };
 
 const addRecipeToFavorite = async (recipeId, userId) => {
