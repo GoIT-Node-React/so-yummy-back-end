@@ -18,7 +18,7 @@ const idValidation = (value, helpers) => {
 // Validation rules
 const validationFields = {
   id: Joi.string().custom(idValidation, 'Invalid id'),
-  name: Joi.string().min(1).max(30),
+  name: Joi.string().min(1).max(16),
   email: Joi.string().email({ tlds: { allow: false } }),
   password: Joi.string()
     .min(6)
