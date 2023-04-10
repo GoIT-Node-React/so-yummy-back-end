@@ -1,6 +1,6 @@
 const Recipe = require('../models/recipe');
 
-const getRecipeByTitleNew = async (value, page, limit) => {
+const getRecipeByTitle = async (value, page, limit) => {
   return await Recipe.aggregate([
     { $match: { title: { $regex: new RegExp(value, 'i') } } },
     {
@@ -57,6 +57,6 @@ const getRecipeByIngredient = async (value, page, limit) => {
 };
 
 module.exports = {
-  getRecipeByTitleNew,
+  getRecipeByTitle,
   getRecipeByIngredient,
 };

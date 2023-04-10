@@ -18,21 +18,24 @@ const idValidation = (value, helpers) => {
 // Validation rules
 const validationFields = {
   id: Joi.string().custom(idValidation, 'Invalid id'),
-  name: Joi.string().min(1).max(16),
-  email: Joi.string().email(),
-  password: Joi.string().min(6).max(16),
+  name: Joi.string().min(1).max(30),
+  email: Joi.string().email({ tlds: { allow: false } }),
+  password: Joi.string()
+    .min(6)
+    .max(16)
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/)
+    .messages({
+      'string.min': 'Must have at least 6 characters',
+      'string.max': 'Must be less then or equal 16 characters',
+      'string.pattern.base': 'At least one uppercase letter, one lowercase letter and one number',
+    }),
   refreshToken: Joi.string(),
   title: Joi.string().min(3).max(30),
   category: Joi.string().equal(...Object.values(CATEGORIES)),
   instructions: Joi.string().min(10),
   description: Joi.string().min(8),
   time: Joi.string().min(1),
-  ingredients: Joi.array().items(
-    Joi.object({
-      id: Joi.string().custom(idValidation, 'Invalid id').required(),
-      measure: Joi.string().min(1).required(),
-    })
-  ),
+  ingredients: Joi.string(),
   // Search, ingredients
   type: Joi.string().equal(...Object.values(SearchType)),
   value: Joi.string().min(1).max(30),
