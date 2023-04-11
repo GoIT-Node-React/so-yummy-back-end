@@ -149,7 +149,7 @@ const getRecipesByCategories = async () => {
   const result = await Recipe.aggregate([
     {
       $facet: {
-        breackfast: [
+        breakfast: [
           {
             $match: {
               category: {
