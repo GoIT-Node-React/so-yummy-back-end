@@ -1,9 +1,9 @@
-### so-yummy-back-end
+# SO-YUMMY-BACK-END
 <div>
 
-### ENDPOINTS:
+## ENDPOINTS:
 
-## 1. Auth
+### 1. Auth
 
 | Method | Endpoint               | Description              |
 | ------ |------------------------|--------------------------|
@@ -15,14 +15,14 @@
 | GET    | `/auth/google`         | User login  ith Google   |
 
 
-## 2. User
+### 2. User
 | Method | Endpoint               | Description              |
 | ------ |------------------------|--------------------------|
 | PATCH  | `/user/`               | Upload a file            |
 | PATCH  | `/user/subscribe`      | Subscribe for news       |
 
 
-## 3. Recipes
+### 3. Recipes
 
 | Method | Endpoint                             | Description               |
 | ------ |--------------------------------------|-------------------------- |
@@ -32,21 +32,21 @@
 | GET    | `/recipes/:recipeId         `        | Get recipe by id          |
 
 
-## 4. Search 
+### 4. Search 
 
 | Method | Endpoint               | Description                          |
 | ------ |------------------------|--------------------------------------|
 | GET    | `/search/`             | Search recipe by title or ingredient |
 
 
-## 5. Popular recipes 
+### 5. Popular recipes 
 
 | Method | Endpoint           | Description        |
 | ------ |--------------------|--------------------|
 | GET    | `/popularRecipes/` | Get popular recipes|
 
 
-## 6. Own recipes 
+### 6. Own recipes 
 
 | Method | Endpoint                | Description             |
 | ------ |-------------------------| ------------------------|
@@ -55,7 +55,7 @@
 | DELETE | `/ownRecipes/:recipeId` | Remove recipe by id     |
 
 
-## 7. Favorite recipes 
+### 7. Favorite recipes 
 
 | Method | Endpoint              | Description             |
 | ------ |-----------------------| ------------------------|
@@ -63,7 +63,7 @@
 | POST   |` /favorite/`          | Add recipeImage         |
 | DELETE | `/favorite/:recipeId` | Remove recipe by id     |
 
-## 8. Shoping list    
+### 8. Shoping list    
 
 | Method | Endpoint                 | Description            |
 | ------ |--------------------------| -----------------------|
@@ -72,13 +72,12 @@
 | DELETE | `/shoppingList/:id`      | Delete ingredients     |
 
 
-## 9. Ingredients
+### 9. Ingredients
 
 | Method | Endpoint         | Description             |
 | ------ |------------------| ------------------------| 
 | GET    | `/ingredients`   | Get Ingredients list    |
 | GET    | `/ingredient `   | Get Ingredient          |
-
 
 
 </div>
