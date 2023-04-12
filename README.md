@@ -1,6 +1,6 @@
 # SO-YUMMY-BACK-END
  <div align="center">
-[](https://asset.cloudinary.com/dqbsuo2mt/6759501ff221ea48497ef9e5276b1648)
+![SO-YUMMY](https://res.cloudinary.com/dqbsuo2mt/image/upload/v1681292038/Untitled_kjlrff.png)
 </div>
 <div>
 
