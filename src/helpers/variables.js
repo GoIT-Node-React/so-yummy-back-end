@@ -15,7 +15,7 @@ const CATEGORIES = [
   'Side',
   'Starter',
   'Vegan',
-  'Vegeterian',
+  'Vegetarian',
 ];
 
 module.exports = {
