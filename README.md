@@ -1,7 +1,14 @@
-# SO-YUMMY-BACK-END
  <div align="center">
+
+ # SO-YUMMY-BACK-END
 ![SO-YUMMY](https://res.cloudinary.com/dqbsuo2mt/image/upload/v1681292038/Untitled_kjlrff.png)
 </div>
+ <div align="center">
+
+# SO-YUMMY Backend Part
+![SO-YUMMY](https://res.cloudinary.com/dbcvume5y/image/upload/v1681084557/20230410025245_pc5btv.png)
+</div>
+
 <div>
 
 ## ENDPOINTS:
