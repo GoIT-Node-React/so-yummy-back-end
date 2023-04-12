@@ -1,4 +1,7 @@
 # SO-YUMMY-BACK-END
+ <div align="center">
+[](https://asset.cloudinary.com/dqbsuo2mt/6759501ff221ea48497ef9e5276b1648)
+</div>
 <div>
 
 ## ENDPOINTS:
