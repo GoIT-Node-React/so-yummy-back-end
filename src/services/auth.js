@@ -22,11 +22,6 @@ const login = async (candidate) => {
     throw new UnAuthorizedError('Email or password is wrong');
   }
 
-  // TODO: Add email verification check
-  // if (!user.verify) {
-  //   throw new UnAuthorizedError('Please, verify your email');
-  // }
-
   const payload = {
     id: user._id,
   };

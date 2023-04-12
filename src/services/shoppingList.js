@@ -1,5 +1,56 @@
 const { ShoppingList } = require('../models');
 
+const getAll = async (id) => {
+  const shoppingList = await ShoppingList.aggregate([
+    {
+      $match: {
+        owner: id,
+      },
+    },
+    {
+      $lookup: {
+        from: 'ingredients',
+        localField: 'ingredient',
+        foreignField: '_id',
+        as: 'ingredient',
+      },
+    },
+    {
+      $set: {
+        ingredient: {
+          $arrayElemAt: ['$ingredient', 0],
+        },
+      },
+    },
+    {
+      $facet: {
+        shoppingList: [],
+        count: [
+          {
+            $count: 'total',
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        shoppingList: {
+          _id: 1,
+          value: 1,
+          ingredient: {
+            _id: 1,
+            ttl: 1,
+            thb: 1,
+          },
+          recipeId: 1,
+        },
+      },
+    },
+  ]);
+
+  return shoppingList[0];
+};
+
 const getByUserId = async (id, limit, page) => {
   const shoppingList = await ShoppingList.aggregate([
     {
@@ -81,6 +132,7 @@ const removeById = async (id, owner) => {
 };
 
 module.exports = {
+  getAll,
   getByUserId,
   add,
   removeById,
