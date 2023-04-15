@@ -37,24 +37,8 @@
       "description": "Recipe endpoints"
     },
     {
-      "name": "own-recipes",
-      "description": "Own recipe endpoints"
-    },
-    {
-      "name": "search",
-      "description": "Search endpoint"
-    },
-    {
-      "name": "favorite",
-      "description": "Favorite endpoints"
-    },
-    {
-      "name": "shopping-list",
+      "name": "shopping-lists",
       "description": "Shopping list endpoints"
-    },
-    {
-      "name": "popular-recipes",
-      "description": "Popular recipes endpoints"
     }
   ],
   "paths": {
@@ -677,9 +661,9 @@
         }
       }
     },
-    "/own-recipes": {
+    "/recipes/own-recipes": {
       "post": {
-        "tags": ["own-recipes"],
+        "tags": ["recipes"],
         "summary": "Create new recipe",
         "security": [
           {
@@ -693,7 +677,15 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["thumb", "title", "category", "instructions", "description", "time", "ingredients"],
+                "required": [
+                  "thumb",
+                  "title",
+                  "category",
+                  "instructions",
+                  "description",
+                  "time",
+                  "ingredients"
+                ],
                 "properties": {
                   "thumb": {
                     "type": "string",
@@ -913,7 +905,7 @@
         }
       },
       "get": {
-        "tags": ["own-recipes"],
+        "tags": ["recipes"],
         "summary": "Get own recipes list",
         "security": [
           {
@@ -1099,9 +1091,9 @@
         }
       }
     },
-    "/own-recipes/{recipeId}": {
+    "/recipes/own-recipes/{recipeId}": {
       "delete": {
-        "tags": ["own-recipes"],
+        "tags": ["recipes"],
         "summary": "Delete recipe",
         "security": [
           {
@@ -1277,9 +1269,9 @@
         }
       }
     },
-    "/popular-recipes": {
+    "/recipes/popular-recipes": {
       "get": {
-        "tags": ["popular-recipes"],
+        "tags": ["recipes"],
         "summary": "Get popular recipes list",
         "security": [
           {
@@ -1464,9 +1456,9 @@
         }
       }
     },
-    "/search": {
+    "/recipes/search": {
       "get": {
-        "tags": ["search"],
+        "tags": ["recipes"],
         "summary": "Get a recipe by recipe name or ingredient name",
         "security": [
           {
@@ -1677,9 +1669,9 @@
         }
       }
     },
-    "/shoppint-list": {
+    "/shopping-lists": {
       "post": {
-        "tags": ["shopping-list"],
+        "tags": ["shopping-lists"],
         "summary": "Add ingredient to shopping list",
         "security": [
           {
@@ -1698,7 +1690,7 @@
                   "ingredientId": {
                     "type": "string",
                     "description": "Ingredient's id (ObjectId)",
-                    "emample": "507f1f77bcf86cd799439011"
+                    "example": "507f1f77bcf86cd799439011"
                   },
                   "value": {
                     "type": "string",
@@ -1788,7 +1780,7 @@
         }
       },
       "get": {
-        "tags": ["shopping-list"],
+        "tags": ["shopping-lists"],
         "summary": "Get own recipes list",
         "security": [
           {
@@ -1912,9 +1904,9 @@
         }
       }
     },
-    "/shopping-list/{id}": {
+    "/shopping-lists/{id}": {
       "delete": {
-        "tags": ["shopping-list"],
+        "tags": ["shopping-lists"],
         "summary": "Delete recipe",
         "security": [
           {
@@ -1924,7 +1916,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "recipeId",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "string"
@@ -2241,7 +2233,7 @@
                             "description": {
                               "type": "string",
                               "description": "Recipe's description",
-                              "exaple": "A British dessert consisting of a shortcrust pastry shell filled with raspberry jam, frangipane, and topped with almonds."
+                              "example": "A British dessert consisting of a shortcrust pastry shell filled with raspberry jam, frangipane, and topped with almonds."
                             },
                             "thumb": {
                               "type": "string",
@@ -2839,9 +2831,9 @@
         }
       }
     },
-    "/favorite": {
+    "/recipes/favorites": {
       "get": {
-        "tags": ["favorite"],
+        "tags": ["recipes"],
         "summary": "Get user favorite recipes",
         "security": [
           {
@@ -2980,7 +2972,7 @@
         }
       },
       "post": {
-        "tags": ["favorite"],
+        "tags": ["recipes"],
         "summary": "Add recipe to favorite",
         "security": [
           {
@@ -3102,9 +3094,9 @@
         }
       }
     },
-    "/favorite/{recipeId}": {
+    "/recipes/favorites/{recipeId}": {
       "delete": {
-        "tags": ["favorite"],
+        "tags": ["recipes"],
         "summary": "Delete recipe from favorite",
         "security": [
           {
@@ -3473,7 +3465,15 @@
       },
       "AddOwnRecipeRequest": {
         "type": "object",
-        "required": ["thumb", "title", "category", "instructions", "description", "time", "ingredients"],
+        "required": [
+          "thumb",
+          "title",
+          "category",
+          "instructions",
+          "description",
+          "time",
+          "ingredients"
+        ],
         "properties": {
           "thumb": {
             "type": "string",
@@ -4307,7 +4307,7 @@
           "ingredientId": {
             "type": "string",
             "description": "Ingredient's id (ObjectId)",
-            "emample": "507f1f77bcf86cd799439011"
+            "example": "507f1f77bcf86cd799439011"
           },
           "value": {
             "type": "string",
@@ -4649,7 +4649,7 @@
                   "description": {
                     "type": "string",
                     "description": "Recipe's description",
-                    "exaple": "A British dessert consisting of a shortcrust pastry shell filled with raspberry jam, frangipane, and topped with almonds."
+                    "example": "A British dessert consisting of a shortcrust pastry shell filled with raspberry jam, frangipane, and topped with almonds."
                   },
                   "thumb": {
                     "type": "string",
