@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { Recipe } = require('../models');
+const mongoose = require("mongoose");
+const { Recipe } = require("../models");
 
 // Get recipes with pagination
 const getRecipes = async (limit, page) => {
@@ -16,7 +16,7 @@ const getRecipes = async (limit, page) => {
         ],
         count: [
           {
-            $count: 'total',
+            $count: "total",
           },
         ],
       },
@@ -33,7 +33,7 @@ const getRecipes = async (limit, page) => {
           time: 1,
         },
         total: {
-          $arrayElemAt: ['$count.total', 0],
+          $arrayElemAt: ["$count.total", 0],
         },
         page: {
           $literal: page,
@@ -58,25 +58,25 @@ const getRecipeById = async (recipeId) => {
     },
     {
       $lookup: {
-        from: 'ingredients',
-        localField: 'ingredients.id',
-        foreignField: '_id',
-        as: 'ingr_info',
+        from: "ingredients",
+        localField: "ingredients.id",
+        foreignField: "_id",
+        as: "ingr_info",
       },
     },
     {
       $set: {
         ingredients: {
           $map: {
-            input: '$ingredients',
+            input: "$ingredients",
             in: {
               $mergeObjects: [
-                '$$this',
+                "$$this",
                 {
                   $arrayElemAt: [
-                    '$ingr_info',
+                    "$ingr_info",
                     {
-                      $indexOfArray: ['$ingr_info._id', '$$this.id'],
+                      $indexOfArray: ["$ingr_info._id", "$$this.id"],
                     },
                   ],
                 },
@@ -87,7 +87,7 @@ const getRecipeById = async (recipeId) => {
       },
     },
     {
-      $unset: ['ingr_info', 'ingredients.id'],
+      $unset: ["ingr_info", "ingredients.id"],
     },
   ]);
 
@@ -99,7 +99,7 @@ const getRecipesByCategoryName = async (categoryName, limit, page) => {
   const recipe = await Recipe.aggregate([
     {
       $match: {
-        category: new RegExp(categoryName, 'i'),
+        category: new RegExp(categoryName, "i"),
       },
     },
     {
@@ -114,7 +114,7 @@ const getRecipesByCategoryName = async (categoryName, limit, page) => {
         ],
         count: [
           {
-            $count: 'total',
+            $count: "total",
           },
         ],
       },
@@ -130,7 +130,7 @@ const getRecipesByCategoryName = async (categoryName, limit, page) => {
           preview: 1,
         },
         total: {
-          $arrayElemAt: ['$count.total', 0],
+          $arrayElemAt: ["$count.total", 0],
         },
         page: {
           $literal: page,
@@ -145,121 +145,51 @@ const getRecipesByCategoryName = async (categoryName, limit, page) => {
   return recipe[0];
 };
 
-const getRecipesByCategories = async () => {
+const getRecipesByCategories = async (categories) => {
+  const pipeline = [
+    {
+      $sort: {
+        updatedAt: -1,
+      },
+    },
+    {
+      $limit: 4,
+    },
+    {
+      $project: {
+        title: 1,
+        category: 1,
+        description: 1,
+        thumb: 1,
+        preview: 1,
+      },
+    },
+  ];
+
+  const pipelineByCategories = Object.fromEntries(
+    categories.map((category) => [
+      category,
+      [
+        {
+          $match: {
+            category: {
+              $regex: new RegExp(category, "i"),
+            },
+          },
+        },
+        ...pipeline,
+      ],
+    ])
+  );
+
   const result = await Recipe.aggregate([
     {
-      $facet: {
-        breakfast: [
-          {
-            $match: {
-              category: {
-                $regex: new RegExp('breakfast', 'i'),
-              },
-            },
-          },
-          {
-            $sort: {
-              updatedAt: -1,
-            },
-          },
-          {
-            $limit: 4,
-          },
-          {
-            $project: {
-              title: 1,
-              category: 1,
-              description: 1,
-              thumb: 1,
-              preview: 1,
-            },
-          },
-        ],
-        miscellaneous: [
-          {
-            $match: {
-              category: {
-                $regex: new RegExp('miscellaneous', 'i'),
-              },
-            },
-          },
-          {
-            $sort: {
-              updatedAt: -1,
-            },
-          },
-          {
-            $limit: 4,
-          },
-          {
-            $project: {
-              title: 1,
-              category: 1,
-              description: 1,
-              thumb: 1,
-              preview: 1,
-            },
-          },
-        ],
-        chicken: [
-          {
-            $match: {
-              category: {
-                $regex: new RegExp('chicken', 'i'),
-              },
-            },
-          },
-          {
-            $sort: {
-              updatedAt: -1,
-            },
-          },
-          {
-            $limit: 4,
-          },
-          {
-            $project: {
-              title: 1,
-              category: 1,
-              description: 1,
-              thumb: 1,
-              preview: 1,
-            },
-          },
-        ],
-        dessert: [
-          {
-            $match: {
-              category: {
-                $regex: new RegExp('dessert', 'i'),
-              },
-            },
-          },
-          {
-            $sort: {
-              updatedAt: -1,
-            },
-          },
-          {
-            $limit: 4,
-          },
-          {
-            $project: {
-              title: 1,
-              category: 1,
-              description: 1,
-              thumb: 1,
-              preview: 1,
-            },
-          },
-        ],
-      },
+      $facet: pipelineByCategories,
     },
   ]);
 
   return result[0];
 };
-
 module.exports = {
   getRecipes,
   getRecipeById,
