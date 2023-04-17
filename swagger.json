@@ -661,7 +661,7 @@
         }
       }
     },
-    "/recipes/own-recipes": {
+    "/recipes/own": {
       "post": {
         "tags": ["recipes"],
         "summary": "Create new recipe",
@@ -1091,7 +1091,7 @@
         }
       }
     },
-    "/recipes/own-recipes/{recipeId}": {
+    "/recipes/own/{recipeId}": {
       "delete": {
         "tags": ["recipes"],
         "summary": "Delete recipe",
@@ -1269,7 +1269,7 @@
         }
       }
     },
-    "/recipes/popular-recipes": {
+    "/recipes/popular": {
       "get": {
         "tags": ["recipes"],
         "summary": "Get popular recipes list",
@@ -2562,13 +2562,40 @@
         }
       }
     },
-    "/recipes/main-page": {
+    "/recipes/newest": {
       "get": {
         "tags": ["recipes"],
-        "summary": "Get last 4 recipes by 4 categories",
+        "summary": "Get last 4 recipes by one or several categories",
         "security": [
           {
             "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "categories",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Beef",
+                "Breakfast",
+                "Chicken",
+                "Dessert",
+                "Goat",
+                "Lamb",
+                "Miscellaneous",
+                "Pasta",
+                "Pork",
+                "Seafood",
+                "Side",
+                "Starter",
+                "Vegan",
+                "Vegeterian"
+              ]
+            },
+
+            "description": "Categories which will return from server with 4 newest recipes in each"
           }
         ],
         "responses": {
@@ -2595,7 +2622,7 @@
                         "categories": {
                           "type": "object",
                           "properties": {
-                            "breackfast": {
+                            "categoryName": {
                               "type": "array",
                               "items": {
                                 "type": "object",
@@ -2629,165 +2656,6 @@
                                       "Vegeterian"
                                     ],
                                     "example": "Breakfast"
-                                  },
-                                  "description": {
-                                    "type": "string",
-                                    "description": "Recipe's description",
-                                    "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
-                                  },
-                                  "thumb": {
-                                    "type": "string",
-                                    "description": "Recipe's image",
-                                    "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
-                                  },
-                                  "preview": {
-                                    "type": "string",
-                                    "description": "Recipe's preview image",
-                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
-                                  }
-                                }
-                              }
-                            },
-                            "miscellaneous": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "_id": {
-                                    "type": "string",
-                                    "description": "Rcipe's id (ObjectId)",
-                                    "example": "507f1f77bcf86cd799439011"
-                                  },
-                                  "title": {
-                                    "type": "string",
-                                    "description": "Recipe's title",
-                                    "example": "Chicken Alfredo Primavera"
-                                  },
-                                  "category": {
-                                    "type": "string",
-                                    "enum": [
-                                      "Beef",
-                                      "Breakfast",
-                                      "Chicken",
-                                      "Dessert",
-                                      "Goat",
-                                      "Lamb",
-                                      "Miscellaneous",
-                                      "Pasta",
-                                      "Pork",
-                                      "Seafood",
-                                      "Side",
-                                      "Starter",
-                                      "Vegan",
-                                      "Vegeterian"
-                                    ],
-                                    "example": "Miscellaneous"
-                                  },
-                                  "description": {
-                                    "type": "string",
-                                    "description": "Recipe's description",
-                                    "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
-                                  },
-                                  "thumb": {
-                                    "type": "string",
-                                    "description": "Recipe's image",
-                                    "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
-                                  },
-                                  "preview": {
-                                    "type": "string",
-                                    "description": "Recipe's preview image",
-                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
-                                  }
-                                }
-                              }
-                            },
-                            "chicken": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "_id": {
-                                    "type": "string",
-                                    "description": "Rcipe's id (ObjectId)",
-                                    "example": "507f1f77bcf86cd799439011"
-                                  },
-                                  "title": {
-                                    "type": "string",
-                                    "description": "Recipe's title",
-                                    "example": "Chicken Alfredo Primavera"
-                                  },
-                                  "category": {
-                                    "type": "string",
-                                    "enum": [
-                                      "Beef",
-                                      "Breakfast",
-                                      "Chicken",
-                                      "Dessert",
-                                      "Goat",
-                                      "Lamb",
-                                      "Miscellaneous",
-                                      "Pasta",
-                                      "Pork",
-                                      "Seafood",
-                                      "Side",
-                                      "Starter",
-                                      "Vegan",
-                                      "Vegeterian"
-                                    ],
-                                    "example": "Chicken"
-                                  },
-                                  "description": {
-                                    "type": "string",
-                                    "description": "Recipe's description",
-                                    "example": "A creamy and satisfying pasta dish made with chicken, vegetables, and Alfredo sauce."
-                                  },
-                                  "thumb": {
-                                    "type": "string",
-                                    "description": "Recipe's image",
-                                    "example": "https://www.themealdb.com/images/media/meals/syqypv1486981727.jpg"
-                                  },
-                                  "preview": {
-                                    "type": "string",
-                                    "description": "Recipe's preview image",
-                                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/anj8pdqnhdqoxmh0kgnm.jpg"
-                                  }
-                                }
-                              }
-                            },
-                            "dessert": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "_id": {
-                                    "type": "string",
-                                    "description": "Rcipe's id (ObjectId)",
-                                    "example": "507f1f77bcf86cd799439011"
-                                  },
-                                  "title": {
-                                    "type": "string",
-                                    "description": "Recipe's title",
-                                    "example": "Chicken Alfredo Primavera"
-                                  },
-                                  "category": {
-                                    "type": "string",
-                                    "enum": [
-                                      "Beef",
-                                      "Breakfast",
-                                      "Chicken",
-                                      "Dessert",
-                                      "Goat",
-                                      "Lamb",
-                                      "Miscellaneous",
-                                      "Pasta",
-                                      "Pork",
-                                      "Seafood",
-                                      "Side",
-                                      "Starter",
-                                      "Vegan",
-                                      "Vegeterian"
-                                    ],
-                                    "example": "Dessert"
                                   },
                                   "description": {
                                     "type": "string",

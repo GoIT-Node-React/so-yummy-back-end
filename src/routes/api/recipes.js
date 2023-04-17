@@ -12,6 +12,7 @@ const {
   search: serachMiddleware,
   favorites: favoritesMiddleware,
   pagination: paginationMiddleware,
+  newest: newestMiddleware,
   uploadImage: { recipeImage },
 } = require("../../middlewares");
 const RequestFieldType = require("../../types/requestFieldType");
@@ -25,14 +26,14 @@ routerRecipe.get(
   controller.getAllRecipes
 );
 routerRecipe.get("/categories", controller.getCategories);
-routerRecipe.get("/main-page", controller.getMainPage);
+routerRecipe.get("/newest", newestMiddleware.newest, controller.getNewest);
 routerRecipe.get(
-  "/own-recipes",
+  "/own",
   paginationMiddleware.pagination,
   ownRecipes.getOwnRecipes
 );
 routerRecipe.get(
-  "/popular-recipes",
+  "/popular",
   paginationMiddleware.pagination,
   popularRecipes.getRecipes
 );
@@ -55,7 +56,7 @@ routerRecipe.get(
 routerRecipe.get("/:recipeId", middleware.recipeId, controller.getRecipeById);
 
 routerRecipe.post(
-  "/own-recipes",
+  "/own",
   recipeImage.single("thumb"),
   middleware.recipe,
   ownRecipes.createRecipe
@@ -66,7 +67,7 @@ routerRecipe.post(
   favorites.addFavorite
 );
 routerRecipe.delete(
-  "/own-recipes/:recipeId",
+  "/own/:recipeId",
   middleware.recipeId,
   ownRecipes.deleteRecipe
 );
